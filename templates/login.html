@@ -1,12 +1,12 @@
 {{define "content"}}
 <div class="container">
     <div class="login-container">
-        <h1 class="main-header">🦷 DentalAI Platform</h1>
+        <h1 class="main-header"><i class="fas fa-tooth"></i> DentalAI Platform</h1>
         <p class="subtitle">Система интеллектуального анализа и маркетплейс стоматологических услуг</p>
 
         <div class="role-selection">
             <div class="role-card">
-                <h3>👤 Пациент</h3>
+                <h3><i class="fas fa-user"></i> Пациент</h3>
                 <p>Загрузите снимок, получите план лечения и предложения от клиник</p>
                 <form action="/login" method="POST">
                     <input type="hidden" name="role" value="patient">
@@ -15,7 +15,7 @@
             </div>
 
             <div class="role-card">
-                <h3>🏥 Клиника</h3>
+                <h3><i class="fas fa-hospital"></i> Клиника</h3>
                 <p>Получайте заявки и управляйте пациентами</p>
                 <form action="/login" method="POST">
                     <input type="hidden" name="role" value="clinic">
@@ -24,7 +24,7 @@
             </div>
 
             <div class="role-card">
-                <h3>🏛️ Гос. орган</h3>
+                <h3><i class="fas fa-landmark"></i> Гос. орган</h3>
                 <p>Мониторинг отрасли и аналитика</p>
                 <form action="/login" method="POST">
                     <input type="hidden" name="role" value="government">

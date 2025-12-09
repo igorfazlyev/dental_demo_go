@@ -1,19 +1,19 @@
 {{define "content"}}
 <div class="dashboard">
     <aside class="sidebar">
-        <h2>🏛️ Панель гос. органа</h2>
+        <h2><i class="fas fa-landmark"></i> Панель гос. органа</h2>
         <nav>
-            <a href="/government/dashboard">Сводная панель региона</a>
-            <a href="/government/analytics" class="active">Детальная аналитика</a>
+            <a href="/government/dashboard"><i class="fas fa-chart-pie"></i> Сводная панель региона</a>
+            <a href="/government/analytics" class="active"><i class="fas fa-search"></i> Детальная аналитика</a>
         </nav>
-        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+        <a href="/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выход</a>
     </aside>
 
     <main class="content">
-        <h1>🔍 Детальная аналитика</h1>
+        <h1><i class="fas fa-search"></i> Детальная аналитика</h1>
 
         <div class="filters-section">
-            <h3>🎛️ Фильтры</h3>
+            <h3><i class="fas fa-filter"></i> Фильтры</h3>
             <form class="filters-form">
                 <select>
                     <option>Все клиники</option>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="analytics-detail">
-            <h3>📊 Детальная информация: СтомаПрофи</h3>
+            <h3><i class="fas fa-hospital"></i> Детальная информация: СтомаПрофи</h3>
             <div class="metrics-grid">
                 <div class="metric-card">
                     <h4>Планов обработано</h4>
@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <h4>📈 Динамика показателей</h4>
+            <h4><i class="fas fa-chart-line"></i> Динамика показателей</h4>
             <table>
                 <thead>
                     <tr><th>Месяц</th><th>Выручка (млн)</th><th>Пациенты</th></tr>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="disease-stats">
-            <h3>🦷 Статистика заболеваемости</h3>
+            <h3><i class="fas fa-tooth"></i> Статистика заболеваемости</h3>
             <table>
                 <thead>
                     <tr><th>Заболевание</th><th>Случаев</th><th>Средний возраст</th></tr>

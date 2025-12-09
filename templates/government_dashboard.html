@@ -1,43 +1,43 @@
 {{define "content"}}
 <div class="dashboard">
     <aside class="sidebar">
-        <h2>🏛️ Панель гос. органа</h2>
+        <h2><i class="fas fa-landmark"></i> Панель гос. органа</h2>
         <nav>
-            <a href="/government/dashboard" class="active">Сводная панель региона</a>
-            <a href="/government/analytics">Детальная аналитика</a>
+            <a href="/government/dashboard" class="active"><i class="fas fa-chart-pie"></i> Сводная панель региона</a>
+            <a href="/government/analytics"><i class="fas fa-search"></i> Детальная аналитика</a>
         </nav>
-        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+        <a href="/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выход</a>
     </aside>
 
     <main class="content">
-        <h1>🏛️ Сводная панель региона</h1>
+        <h1><i class="fas fa-landmark"></i> Сводная панель региона</h1>
         <h3>Регион: Московская область</h3>
 
         <div class="metrics-grid">
             <div class="metric-card">
                 <h4>Планов за месяц</h4>
                 <p class="metric-value">1,247</p>
-                <p class="metric-change positive">+18%</p>
+                <p class="metric-change positive"><i class="fas fa-arrow-up"></i> +18%</p>
             </div>
             <div class="metric-card">
                 <h4>Плановая выручка</h4>
                 <p class="metric-value">215 млн ₽</p>
-                <p class="metric-change positive">+12%</p>
+                <p class="metric-change positive"><i class="fas fa-arrow-up"></i> +12%</p>
             </div>
             <div class="metric-card">
                 <h4>Фактическая выручка</h4>
                 <p class="metric-value">198 млн ₽</p>
-                <p class="metric-change positive">+15%</p>
+                <p class="metric-change positive"><i class="fas fa-arrow-up"></i> +15%</p>
             </div>
             <div class="metric-card">
                 <h4>Активных клиник</h4>
                 <p class="metric-value">47</p>
-                <p class="metric-change positive">+2</p>
+                <p class="metric-change positive"><i class="fas fa-arrow-up"></i> +2</p>
             </div>
         </div>
 
         <div class="gov-section">
-            <h3>💰 Средние цены на услуги</h3>
+            <h3><i class="fas fa-dollar-sign"></i> Средние цены на услуги</h3>
             <table>
                 <thead>
                     <tr><th>Услуга</th><th>Средняя цена (₽)</th></tr>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="gov-section">
-            <h3>📊 Структура заболеваний</h3>
+            <h3><i class="fas fa-chart-pie"></i> Структура заболеваний</h3>
             <table>
                 <thead>
                     <tr><th>Диагноз</th><th>Процент</th></tr>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="gov-section">
-            <h3>🏥 Топ клиник по выручке</h3>
+            <h3><i class="fas fa-trophy"></i> Топ клиник по выручке</h3>
             <table>
                 <thead>
                     <tr><th>Клиника</th><th>Выручка (млн)</th><th>Пациентов</th></tr>

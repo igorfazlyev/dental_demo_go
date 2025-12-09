@@ -1,20 +1,20 @@
 {{define "content"}}
 <div class="dashboard">
     <aside class="sidebar">
-        <h2>👤 Личный кабинет пациента</h2>
+        <h2><i class="fas fa-user-circle"></i> Личный кабинет пациента</h2>
         <nav>
-            <a href="/patient/scans">Мои снимки</a>
-            <a href="/patient/plan">План лечения</a>
-            <a href="/patient/criteria">Настройка критериев</a>
-            <a href="/patient/offers" class="active">Предложения клиник</a>
-            <a href="/patient/consultations">Мои консультации</a>
-            <a href="/patient/reviews">Отзывы и жалобы</a>
+            <a href="/patient/scans"><i class="fas fa-images"></i> Мои снимки</a>
+            <a href="/patient/plan"><i class="fas fa-file-medical"></i> План лечения</a>
+            <a href="/patient/criteria"><i class="fas fa-sliders-h"></i> Настройка критериев</a>
+            <a href="/patient/offers" class="active"><i class="fas fa-hospital-alt"></i> Предложения клиник</a>
+            <a href="/patient/consultations"><i class="fas fa-calendar-check"></i> Мои консультации</a>
+            <a href="/patient/reviews"><i class="fas fa-star"></i> Отзывы и жалобы</a>
         </nav>
-        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+        <a href="/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выход</a>
     </aside>
 
     <main class="content">
-        <h1>🏥 Предложения от клиник</h1>
+        <h1><i class="fas fa-hospital-alt"></i> Предложения от клиник</h1>
         <h3>Получено предложений: {{len .ClinicOffers}}</h3>
 
         <table class="comparison-table">
@@ -32,14 +32,14 @@
                 {{range .ClinicOffers}}
                 <tr>
                     <td><strong>{{.Clinic}}</strong></td>
-                    <td>⭐ {{.Rating}}</td>
-                    <td>{{.Cost}} ₽</td>
+                    <td><i class="fas fa-star text-warning"></i> {{.Rating}}</td>
+                    <td><strong>{{.Cost}} ₽</strong></td>
                     <td>{{.Duration}}</td>
                     <td>{{.Installment}}</td>
                     <td>
                         <form action="/patient/offers" method="POST" style="display:inline">
                             <input type="hidden" name="clinic" value="{{.Clinic}}">
-                            <button type="submit" class="btn btn-small">✅ Выбрать</button>
+                            <button type="submit" class="btn btn-small"><i class="fas fa-check"></i> Выбрать</button>
                         </form>
                     </td>
                 </tr>
@@ -47,18 +47,93 @@
             </tbody>
         </table>
 
-        <h3>Детальная информация</h3>
+        <h2 style="margin-top: 40px;"><i class="fas fa-list"></i> Детальная информация</h2>
         {{range .ClinicOffers}}
-        <div class="offer-card {{if eq $.SelectedClinic .Clinic}}selected{{end}}">
+        <div class="offer-card-detailed {{if eq $.SelectedClinic .Clinic}}selected{{end}}">
             <div class="offer-header">
-                <h3>{{.Clinic}}</h3>
-                <p class="cost">{{.Cost}} ₽</p>
+                <h3><i class="fas fa-hospital"></i> {{.Clinic}}</h3>
+                <div class="offer-rating">
+                    <i class="fas fa-star text-warning"></i> 
+                    <span class="rating-value">{{.Rating}}</span>/5.0
+                </div>
             </div>
-            <p>⭐ Рейтинг: <strong>{{.Rating}}</strong>/5.0</p>
-            <p>🕐 Срок: <strong>{{.Duration}}</strong></p>
-            <p><strong>📋 Детальная калькуляция:</strong><br>{{.Details}}</p>
-            <p><strong>🛡️ Гарантии:</strong> {{.Warranty}}</p>
-            <p><strong>💳 Рассрочка:</strong> {{.Installment}}</p>
+
+            <div class="offer-info-grid">
+                <div class="info-item">
+                    <i class="far fa-clock"></i>
+                    <div>
+                        <strong>Срок лечения</strong>
+                        <p>{{.Duration}}</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-credit-card"></i>
+                    <div>
+                        <strong>Рассрочка</strong>
+                        <p>{{.Installment}}</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <strong>Гарантия</strong>
+                        <p>{{.Warranty}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cost-breakdown">
+                <h4><i class="fas fa-calculator"></i> Детальная калькуляция</h4>
+                <table class="breakdown-table">
+                    <thead>
+                        <tr>
+                            <th>Услуга</th>
+                            <th>Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{if eq .Clinic "СтомаПрофи"}}
+                        <tr><td>Имплант Nobel</td><td>95,000 ₽</td></tr>
+                        <tr><td>Коронка</td><td>35,000 ₽</td></tr>
+                        <tr><td>Лечение каналов</td><td>15,000 ₽</td></tr>
+                        <tr><td>Пломбы (3 шт)</td><td>15,000 ₽</td></tr>
+                        <tr><td>Профессиональная чистка</td><td>5,000 ₽</td></tr>
+                        <tr><td>Анестезия и расходники</td><td>20,000 ₽</td></tr>
+                        {{else if eq .Clinic "Дентал Плюс"}}
+                        <tr><td>Имплант Osstem</td><td>75,000 ₽</td></tr>
+                        <tr><td>Коронка металлокерамика</td><td>30,000 ₽</td></tr>
+                        <tr><td>Лечение каналов</td><td>12,000 ₽</td></tr>
+                        <tr><td>Пломбы (3 шт)</td><td>12,000 ₽</td></tr>
+                        <tr><td>Профессиональная чистка</td><td>4,000 ₽</td></tr>
+                        <tr><td>Анестезия и расходники</td><td>32,000 ₽</td></tr>
+                        {{else if eq .Clinic "ЭлитДент"}}
+                        <tr><td>Имплант Straumann (премиум)</td><td>120,000 ₽</td></tr>
+                        <tr><td>Коронка циркониевая</td><td>45,000 ₽</td></tr>
+                        <tr><td>Лечение каналов (микроскоп)</td><td>20,000 ₽</td></tr>
+                        <tr><td>Пломбы (3 шт, premium)</td><td>18,000 ₽</td></tr>
+                        <tr><td>Профессиональная чистка Air Flow</td><td>7,000 ₽</td></tr>
+                        <tr><td>Анестезия и расходники</td><td>15,000 ₽</td></tr>
+                        {{end}}
+                        <tr class="total-row">
+                            <td><strong>ИТОГО:</strong></td>
+                            <td><strong>{{.Cost}} ₽</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            {{if eq $.SelectedClinic .Clinic}}
+            <div class="selected-badge">
+                <i class="fas fa-check-circle"></i> Вы выбрали эту клинику
+            </div>
+            {{else}}
+            <form action="/patient/offers" method="POST" class="select-form">
+                <input type="hidden" name="clinic" value="{{.Clinic}}">
+                <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-check"></i> Выбрать эту клинику
+                </button>
+            </form>
+            {{end}}
         </div>
         {{end}}
     </main>

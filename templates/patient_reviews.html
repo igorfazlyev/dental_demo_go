@@ -1,20 +1,20 @@
 {{define "content"}}
 <div class="dashboard">
     <aside class="sidebar">
-        <h2>👤 Личный кабинет пациента</h2>
+        <h2><i class="fas fa-user-circle"></i> Личный кабинет пациента</h2>
         <nav>
-            <a href="/patient/scans">Мои снимки</a>
-            <a href="/patient/plan">План лечения</a>
-            <a href="/patient/criteria">Настройка критериев</a>
-            <a href="/patient/offers">Предложения клиник</a>
-            <a href="/patient/consultations">Мои консультации</a>
-            <a href="/patient/reviews" class="active">Отзывы и жалобы</a>
+            <a href="/patient/scans"><i class="fas fa-images"></i> Мои снимки</a>
+            <a href="/patient/plan"><i class="fas fa-file-medical"></i> План лечения</a>
+            <a href="/patient/criteria"><i class="fas fa-sliders-h"></i> Настройка критериев</a>
+            <a href="/patient/offers"><i class="fas fa-hospital-alt"></i> Предложения клиник</a>
+            <a href="/patient/consultations"><i class="fas fa-calendar-check"></i> Мои консультации</a>
+            <a href="/patient/reviews" class="active"><i class="fas fa-star"></i> Отзывы и жалобы</a>
         </nav>
-        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+        <a href="/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выход</a>
     </aside>
 
     <main class="content">
-        <h1>⭐ Отзывы и жалобы</h1>
+        <h1><i class="fas fa-star"></i> Отзывы и жалобы</h1>
 
         <div class="form-section">
             <h3>Оставить отзыв о лечении</h3>
@@ -23,7 +23,7 @@
                 <input type="text" placeholder="Имя врача" required>
                 <label>Оценка: <input type="range" min="1" max="5" value="5"></label>
                 <textarea placeholder="Текст отзыва" rows="5"></textarea>
-                <button type="submit" class="btn btn-primary">📤 Отправить отзыв</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Отправить отзыв</button>
             </form>
         </div>
 
@@ -38,7 +38,7 @@
                     <option>Другое</option>
                 </select>
                 <textarea placeholder="Описание проблемы" rows="5"></textarea>
-                <button type="submit" class="btn btn-primary">📤 Отправить жалобу</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Отправить жалобу</button>
             </form>
         </div>
     </main>

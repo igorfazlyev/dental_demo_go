@@ -84,22 +84,55 @@ func init() {
 func initSession() *Session {
 	return &Session{
 		LoggedIn: false,
+
+		// Patient: 10 scans over 2.5 months
 		PatientScans: []Scan{
-			{ID: 1, Date: "2025-11-15", Status: "ready", AIProcessed: true},
-			{ID: 2, Date: "2025-12-05", Status: "processing", AIProcessed: false},
+			{ID: 1, Date: "2025-09-15", Status: "ready", AIProcessed: true},
+			{ID: 2, Date: "2025-09-28", Status: "ready", AIProcessed: true},
+			{ID: 3, Date: "2025-10-12", Status: "ready", AIProcessed: true},
+			{ID: 4, Date: "2025-10-25", Status: "ready", AIProcessed: true},
+			{ID: 5, Date: "2025-11-08", Status: "ready", AIProcessed: true},
+			{ID: 6, Date: "2025-11-15", Status: "ready", AIProcessed: true},
+			{ID: 7, Date: "2025-11-28", Status: "ready", AIProcessed: true},
+			{ID: 8, Date: "2025-12-05", Status: "processing", AIProcessed: false},
+			{ID: 9, Date: "2025-12-08", Status: "processing", AIProcessed: false},
+			{ID: 10, Date: "2025-12-09", Status: "processing", AIProcessed: false},
 		},
+
+		// Patient: 15 diagnoses and 10 procedures
 		TreatmentPlan: TreatmentPlan{
 			Diagnoses: []string{
-				"Кариес зуба 1.6",
-				"Пульпит зуба 2.5",
+				"Кариес зуба 1.6 (глубокий)",
+				"Пульпит зуба 2.5 (острый)",
+				"Периодонтит зуба 3.7 (хронический)",
 				"Отсутствует зуб 3.7",
+				"Кариес зуба 4.6 (средний)",
+				"Гингивит (генерализованный)",
+				"Пародонтит средней степени",
+				"Кариес зуба 1.4 (поверхностный)",
+				"Скол коронки зуба 2.1",
+				"Отсутствует зуб 4.5",
+				"Кариес корня зуба 3.6",
+				"Подвижность зуба 2.8 (II степень)",
+				"Дефект пломбы зуба 1.7",
+				"Клиновидный дефект зуба 1.3",
+				"Зубной камень (множественный)",
 			},
 			Procedures: []Procedure{
 				{Type: "Имплант", Position: "3.7", Urgency: "Средняя"},
+				{Type: "Имплант", Position: "4.5", Urgency: "Низкая"},
 				{Type: "Коронка", Position: "2.5", Urgency: "Высокая"},
+				{Type: "Коронка", Position: "2.1", Urgency: "Средняя"},
+				{Type: "Лечение каналов", Position: "2.5", Urgency: "Высокая"},
+				{Type: "Лечение каналов", Position: "3.7", Urgency: "Высокая"},
 				{Type: "Пломбирование", Position: "1.6", Urgency: "Высокая"},
+				{Type: "Пломбирование", Position: "4.6", Urgency: "Средняя"},
+				{Type: "Пломбирование", Position: "1.4", Urgency: "Низкая"},
+				{Type: "Профессиональная чистка", Position: "Все зубы", Urgency: "Средняя"},
 			},
 		},
+
+		// Patient: 3 clinic offers
 		ClinicOffers: []ClinicOffer{
 			{
 				Clinic:      "СтомаПрофи",
@@ -108,7 +141,7 @@ func initSession() *Session {
 				Duration:    "3-4 месяца",
 				Warranty:    "5 лет на имплант",
 				Installment: "До 12 месяцев",
-				Details:     "Имплант Nobel - 95000₽, Коронка - 35000₽, Лечение каналов - 15000₽, Прочее - 40000₽",
+				Details:     "Имплант Nobel - 95000₽, Коронка - 35000₽, Лечение каналов - 15000₽, Пломбы (3шт) - 15000₽, Чистка - 5000₽, Прочее - 20000₽",
 			},
 			{
 				Clinic:      "Дентал Плюс",
@@ -117,7 +150,7 @@ func initSession() *Session {
 				Duration:    "2-3 месяца",
 				Warranty:    "3 года на имплант",
 				Installment: "До 6 месяцев",
-				Details:     "Имплант Osstem - 75000₽, Коронка - 30000₽, Лечение каналов - 12000₽, Прочее - 48000₽",
+				Details:     "Имплант Osstem - 75000₽, Коронка - 30000₽, Лечение каналов - 12000₽, Пломбы (3шт) - 12000₽, Чистка - 4000₽, Прочее - 32000₽",
 			},
 			{
 				Clinic:      "ЭлитДент",
@@ -126,17 +159,41 @@ func initSession() *Session {
 				Duration:    "3-5 месяцев",
 				Warranty:    "10 лет на имплант",
 				Installment: "До 24 месяцев",
-				Details:     "Имплант Straumann - 120000₽, Коронка - 45000₽, Лечение каналов - 20000₽, Прочее - 40000₽",
+				Details:     "Имплант Straumann - 120000₽, Коронка - 45000₽, Лечение каналов - 20000₽, Пломбы (3шт) - 18000₽, Чистка - 7000₽, Прочее - 15000₽",
 			},
 		},
+
+		// Clinic: 15 incoming plans over 2 months
 		IncomingPlans: []IncomingPlan{
-			{ID: 1, Age: 35, Gender: "Ж", Date: "2025-12-08", Procedures: "Имплант 3.7, Коронка 2.5, Пломбирование 1.6", Status: "new"},
-			{ID: 2, Age: 42, Gender: "М", Date: "2025-12-07", Procedures: "Протезирование верхняя челюсть", Status: "offer_sent"},
-			{ID: 3, Age: 28, Gender: "Ж", Date: "2025-12-09", Procedures: "Кариес множественный, 4 пломбы", Status: "new"},
+			{ID: 1, Age: 35, Gender: "Ж", Date: "2025-12-09", Procedures: "Имплант 3.7, Коронка 2.5, Лечение каналов", Status: "new"},
+			{ID: 2, Age: 42, Gender: "М", Date: "2025-12-08", Procedures: "Протезирование верхняя челюсть (6 единиц)", Status: "offer_sent"},
+			{ID: 3, Age: 28, Gender: "Ж", Date: "2025-12-08", Procedures: "Кариес множественный, 4 пломбы", Status: "new"},
+			{ID: 4, Age: 51, Gender: "М", Date: "2025-12-07", Procedures: "Имплант 4.6, 4.7, костная пластика", Status: "calculated"},
+			{ID: 5, Age: 33, Gender: "Ж", Date: "2025-12-06", Procedures: "Лечение каналов 1.6, коронка", Status: "offer_sent"},
+			{ID: 6, Age: 46, Gender: "М", Date: "2025-12-05", Procedures: "Пародонтологическое лечение комплексное", Status: "offer_sent"},
+			{ID: 7, Age: 29, Gender: "Ж", Date: "2025-12-04", Procedures: "Эстетическая реставрация 4 передних зуба", Status: "calculated"},
+			{ID: 8, Age: 38, Gender: "М", Date: "2025-12-03", Procedures: "Удаление зуба мудрости + имплант 3.6", Status: "new"},
+			{ID: 9, Age: 44, Gender: "Ж", Date: "2025-12-02", Procedures: "Виниры 6 единиц", Status: "offer_sent"},
+			{ID: 10, Age: 55, Gender: "М", Date: "2025-11-30", Procedures: "Полное протезирование нижняя челюсть", Status: "expired"},
+			{ID: 11, Age: 31, Gender: "Ж", Date: "2025-11-28", Procedures: "Лечение каналов 2.5, 2.6", Status: "offer_sent"},
+			{ID: 12, Age: 48, Gender: "М", Date: "2025-11-25", Procedures: "Имплант 1.6, синус-лифтинг", Status: "offer_sent"},
+			{ID: 13, Age: 26, Gender: "Ж", Date: "2025-11-22", Procedures: "Отбеливание + профчистка", Status: "expired"},
+			{ID: 14, Age: 53, Gender: "М", Date: "2025-11-18", Procedures: "Имплант 3.7, 4.7, протезирование мостовидное", Status: "offer_sent"},
+			{ID: 15, Age: 37, Gender: "Ж", Date: "2025-11-15", Procedures: "Лечение пульпита 3шт, пломбирование 2шт", Status: "offer_sent"},
 		},
+
+		// Clinic: 10 leads with Russian names
 		Leads: []Lead{
 			{ID: 1, Name: "Анна Петрова", Phone: "+7 916 555-1234", Plan: "Имплант 3.7, Коронка 2.5", Cost: 165000, Status: "Не обработан"},
-			{ID: 2, Name: "Игорь Смирнов", Phone: "+7 926 555-5678", Plan: "Протезирование", Cost: 280000, Status: "Записан на консультацию"},
+			{ID: 2, Name: "Игорь Смирнов", Phone: "+7 926 555-5678", Plan: "Протезирование верхняя челюсть", Cost: 280000, Status: "Записан на консультацию"},
+			{ID: 3, Name: "Елена Ковалева", Phone: "+7 905 555-2341", Plan: "Имплант 4.6, 4.7 + костная пластика", Cost: 320000, Status: "Записан на консультацию"},
+			{ID: 4, Name: "Дмитрий Волков", Phone: "+7 903 555-8765", Plan: "Лечение каналов + коронка", Cost: 45000, Status: "Лечение начато"},
+			{ID: 5, Name: "Мария Соколова", Phone: "+7 915 555-4567", Plan: "Виниры 6 единиц", Cost: 180000, Status: "Не обработан"},
+			{ID: 6, Name: "Сергей Морозов", Phone: "+7 925 555-7890", Plan: "Пародонтологическое лечение", Cost: 85000, Status: "Лечение начато"},
+			{ID: 7, Name: "Ольга Новикова", Phone: "+7 917 555-3456", Plan: "Эстетическая реставрация 4 зуба", Cost: 96000, Status: "Записан на консультацию"},
+			{ID: 8, Name: "Александр Лебедев", Phone: "+7 906 555-6543", Plan: "Имплант + синус-лифтинг", Cost: 195000, Status: "Не обработан"},
+			{ID: 9, Name: "Татьяна Козлова", Phone: "+7 916 555-9876", Plan: "Лечение каналов 2.5, 2.6", Cost: 28000, Status: "Лечение завершено"},
+			{ID: 10, Name: "Владимир Орлов", Phone: "+7 929 555-1111", Plan: "Полное протезирование нижняя челюсть", Cost: 450000, Status: "Отказ"},
 		},
 	}
 }

@@ -1,19 +1,19 @@
 {{define "content"}}
 <div class="dashboard">
     <aside class="sidebar">
-        <h2>🏥 Панель клиники</h2>
+        <h2><i class="fas fa-hospital"></i> Панель клиники</h2>
         <nav>
-            <a href="/clinic/dashboard">Dashboard</a>
-            <a href="/clinic/plans" class="active">Входящие планы лечения</a>
-            <a href="/clinic/leads">Лиды (Заявки)</a>
-            <a href="/clinic/analytics">Аналитика и контроль</a>
-            <a href="/clinic/pricelist">Настройки прайс-листа</a>
+            <a href="/clinic/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/clinic/plans" class="active"><i class="fas fa-inbox"></i> Входящие планы лечения</a>
+            <a href="/clinic/leads"><i class="fas fa-user-friends"></i> Лиды (Заявки)</a>
+            <a href="/clinic/analytics"><i class="fas fa-chart-line"></i> Аналитика и контроль</a>
+            <a href="/clinic/pricelist"><i class="fas fa-dollar-sign"></i> Настройки прайс-листа</a>
         </nav>
-        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+        <a href="/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выход</a>
     </aside>
 
     <main class="content">
-        <h1>📥 Входящие планы лечения</h1>
+        <h1><i class="fas fa-inbox"></i> Входящие планы лечения</h1>
         <h3>Анонимизированные планы от пациентов</h3>
 
         {{range .IncomingPlans}}
@@ -33,17 +33,17 @@
                 <form action="/clinic/plans" method="POST">
                     <input type="hidden" name="plan_id" value="{{.ID}}">
                     <input type="hidden" name="action" value="calculate">
-                    <button type="submit" class="btn btn-primary">🧮 Рассчитать предложение</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-calculator"></i> Рассчитать предложение</button>
                 </form>
                 {{else if eq .Status "calculated"}}
-                <p class="success">Расчет выполнен! Стоимость: 175k ₽</p>
+                <p class="success"><i class="fas fa-check-circle"></i> Расчет выполнен! Стоимость: 175k ₽</p>
                 <form action="/clinic/plans" method="POST">
                     <input type="hidden" name="plan_id" value="{{.ID}}">
                     <input type="hidden" name="action" value="send">
-                    <button type="submit" class="btn btn-primary">📤 Отправить предложение</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Отправить предложение</button>
                 </form>
                 {{else}}
-                <p class="success">✅ Предложение отправлено</p>
+                <p class="success"><i class="fas fa-check-circle"></i> Предложение отправлено</p>
                 {{end}}
             </div>
         </div>

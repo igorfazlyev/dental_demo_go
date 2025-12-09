@@ -1,29 +1,29 @@
 {{define "content"}}
 <div class="dashboard">
     <aside class="sidebar">
-        <h2>🏥 Панель клиники</h2>
+        <h2><i class="fas fa-hospital"></i> Панель клиники</h2>
         <nav>
-            <a href="/clinic/dashboard">Dashboard</a>
-            <a href="/clinic/plans">Входящие планы лечения</a>
-            <a href="/clinic/leads" class="active">Лиды (Заявки)</a>
-            <a href="/clinic/analytics">Аналитика и контроль</a>
-            <a href="/clinic/pricelist">Настройки прайс-листа</a>
+            <a href="/clinic/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/clinic/plans"><i class="fas fa-inbox"></i> Входящие планы лечения</a>
+            <a href="/clinic/leads" class="active"><i class="fas fa-user-friends"></i> Лиды (Заявки)</a>
+            <a href="/clinic/analytics"><i class="fas fa-chart-line"></i> Аналитика и контроль</a>
+            <a href="/clinic/pricelist"><i class="fas fa-dollar-sign"></i> Настройки прайс-листа</a>
         </nav>
-        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+        <a href="/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Выход</a>
     </aside>
 
     <main class="content">
-        <h1>🎯 Лиды (Заявки)</h1>
+        <h1><i class="fas fa-users"></i> Лиды (Заявки)</h1>
         <h3>Пациенты, принявшие предложение</h3>
 
         {{range .Leads}}
         <div class="lead-card">
-            <h3>👤 {{.Name}} - {{.Status}}</h3>
+            <h3><i class="fas fa-user"></i> {{.Name}} - {{.Status}}</h3>
             <div class="lead-details">
                 <div>
-                    <p><strong>📞 Телефон:</strong> {{.Phone}}</p>
-                    <p><strong>💼 План лечения:</strong> {{.Plan}}</p>
-                    <p><strong>💰 Стоимость:</strong> {{.Cost}} ₽</p>
+                    <p><strong><i class="fas fa-phone"></i> Телефон:</strong> {{.Phone}}</p>
+                    <p><strong><i class="fas fa-briefcase"></i> План лечения:</strong> {{.Plan}}</p>
+                    <p><strong><i class="fas fa-dollar-sign"></i> Стоимость:</strong> {{.Cost}} ₽</p>
                 </div>
                 <div>
                     <label><strong>Изменить статус:</strong></label>
@@ -33,11 +33,11 @@
                         <option {{if eq .Status "Лечение начато"}}selected{{end}}>Лечение начато</option>
                         <option {{if eq .Status "Отказ"}}selected{{end}}>Отказ</option>
                     </select>
-                    <button class="btn btn-small">💾 Сохранить</button>
+                    <button class="btn btn-small"><i class="fas fa-save"></i> Сохранить</button>
                 </div>
             </div>
             <div>
-                <label><strong>📝 Примечания:</strong></label>
+                <label><strong><i class="fas fa-sticky-note"></i> Примечания:</strong></label>
                 <textarea rows="3" placeholder="Добавьте заметки о пациенте..."></textarea>
             </div>
         </div>
