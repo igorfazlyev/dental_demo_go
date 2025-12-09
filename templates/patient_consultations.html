@@ -1,0 +1,46 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>👤 Личный кабинет пациента</h2>
+        <nav>
+            <a href="/patient/scans">Мои снимки</a>
+            <a href="/patient/plan">План лечения</a>
+            <a href="/patient/criteria">Настройка критериев</a>
+            <a href="/patient/offers">Предложения клиник</a>
+            <a href="/patient/consultations" class="active">Мои консультации</a>
+            <a href="/patient/reviews">Отзывы и жалобы</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>📞 Мои консультации</h1>
+
+        {{if .SelectedClinic}}
+        <div class="success-box">
+            ✅ Вы выбрали клинику: <strong>{{.SelectedClinic}}</strong>
+        </div>
+
+        <div class="consultation-details">
+            <h3>📋 Детали консультации</h3>
+            <div class="details-grid">
+                <div>
+                    <p><strong>Клиника:</strong> {{.SelectedClinic}}</p>
+                    <p><strong>Статус:</strong> Ожидает звонка</p>
+                    <p><strong>Дата выбора:</strong> 09.12.2025</p>
+                </div>
+                <div>
+                    <p><strong>Телефон клиники:</strong> +7 495 123-4567</p>
+                    <p><strong>Email:</strong> info@clinic.ru</p>
+                    <p><strong>Адрес:</strong> г. Москва, ул. Примерная, д. 10</p>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="info-box">
+            📭 У вас пока нет активных консультаций. Выберите предложение в разделе 'Предложения клиник'
+        </div>
+        {{end}}
+    </main>
+</div>
+{{end}}

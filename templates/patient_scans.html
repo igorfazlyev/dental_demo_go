@@ -1,0 +1,38 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>👤 Личный кабинет пациента</h2>
+        <nav>
+            <a href="/patient/scans" class="active">Мои снимки</a>
+            <a href="/patient/plan">План лечения</a>
+            <a href="/patient/criteria">Настройка критериев</a>
+            <a href="/patient/offers">Предложения клиник</a>
+            <a href="/patient/consultations">Мои консультации</a>
+            <a href="/patient/reviews">Отзывы и жалобы</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>📊 Мои снимки</h1>
+        <button class="btn btn-primary">➕ Загрузить новый снимок</button>
+
+        <div class="scans-list">
+            {{range .PatientScans}}
+            <div class="scan-card">
+                <div class="scan-info">
+                    <p><strong>📅 Дата:</strong> {{.Date}}</p>
+                    <p><strong>{{if eq .Status "ready"}}✅{{else}}⏳{{end}} Статус:</strong> 
+                       {{if eq .Status "ready"}}Готов план лечения{{else}}Обрабатывается ИИ{{end}}
+                    </p>
+                    <p><strong>🆔 ID:</strong> SCAN-{{printf "%04d" .ID}}</p>
+                </div>
+                {{if eq .Status "ready"}}
+                <a href="/patient/plan" class="btn btn-small">👁️ Просмотр</a>
+                {{end}}
+            </div>
+            {{end}}
+        </div>
+    </main>
+</div>
+{{end}}

@@ -1,0 +1,92 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>🏛️ Панель гос. органа</h2>
+        <nav>
+            <a href="/government/dashboard">Сводная панель региона</a>
+            <a href="/government/analytics" class="active">Детальная аналитика</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>🔍 Детальная аналитика</h1>
+
+        <div class="filters-section">
+            <h3>🎛️ Фильтры</h3>
+            <form class="filters-form">
+                <select>
+                    <option>Все клиники</option>
+                    <option>СтомаПрофи</option>
+                    <option>ЭлитДент</option>
+                    <option>Дентал Плюс</option>
+                </select>
+
+                <select>
+                    <option>Все возрастные группы</option>
+                    <option>18-30</option>
+                    <option>31-45</option>
+                    <option>46-60</option>
+                    <option>60+</option>
+                </select>
+
+                <select>
+                    <option>Все</option>
+                    <option>Мужской</option>
+                    <option>Женский</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">Применить фильтры</button>
+            </form>
+        </div>
+
+        <div class="analytics-detail">
+            <h3>📊 Детальная информация: СтомаПрофи</h3>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Планов обработано</h4>
+                    <p class="metric-value">89</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Средний чек</h4>
+                    <p class="metric-value">175k ₽</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Конверсия</h4>
+                    <p class="metric-value">38%</p>
+                </div>
+            </div>
+
+            <h4>📈 Динамика показателей</h4>
+            <table>
+                <thead>
+                    <tr><th>Месяц</th><th>Выручка (млн)</th><th>Пациенты</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Август</td><td>22.5</td><td>285</td></tr>
+                    <tr><td>Сентябрь</td><td>24.1</td><td>298</td></tr>
+                    <tr><td>Октябрь</td><td>23.8</td><td>287</td></tr>
+                    <tr><td>Ноябрь</td><td>26.2</td><td>315</td></tr>
+                    <tr><td>Декабрь</td><td>28.5</td><td>342</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="disease-stats">
+            <h3>🦷 Статистика заболеваемости</h3>
+            <table>
+                <thead>
+                    <tr><th>Заболевание</th><th>Случаев</th><th>Средний возраст</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Кариес</td><td>523</td><td>34</td></tr>
+                    <tr><td>Пульпит</td><td>224</td><td>38</td></tr>
+                    <tr><td>Пародонтит</td><td>187</td><td>45</td></tr>
+                    <tr><td>Периодонтит</td><td>98</td><td>42</td></tr>
+                    <tr><td>Гингивит</td><td>156</td><td>29</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+{{end}}

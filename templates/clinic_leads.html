@@ -1,0 +1,47 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>🏥 Панель клиники</h2>
+        <nav>
+            <a href="/clinic/dashboard">Dashboard</a>
+            <a href="/clinic/plans">Входящие планы лечения</a>
+            <a href="/clinic/leads" class="active">Лиды (Заявки)</a>
+            <a href="/clinic/analytics">Аналитика и контроль</a>
+            <a href="/clinic/pricelist">Настройки прайс-листа</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>🎯 Лиды (Заявки)</h1>
+        <h3>Пациенты, принявшие предложение</h3>
+
+        {{range .Leads}}
+        <div class="lead-card">
+            <h3>👤 {{.Name}} - {{.Status}}</h3>
+            <div class="lead-details">
+                <div>
+                    <p><strong>📞 Телефон:</strong> {{.Phone}}</p>
+                    <p><strong>💼 План лечения:</strong> {{.Plan}}</p>
+                    <p><strong>💰 Стоимость:</strong> {{.Cost}} ₽</p>
+                </div>
+                <div>
+                    <label><strong>Изменить статус:</strong></label>
+                    <select>
+                        <option {{if eq .Status "Не обработан"}}selected{{end}}>Не обработан</option>
+                        <option {{if eq .Status "Записан на консультацию"}}selected{{end}}>Записан на консультацию</option>
+                        <option {{if eq .Status "Лечение начато"}}selected{{end}}>Лечение начато</option>
+                        <option {{if eq .Status "Отказ"}}selected{{end}}>Отказ</option>
+                    </select>
+                    <button class="btn btn-small">💾 Сохранить</button>
+                </div>
+            </div>
+            <div>
+                <label><strong>📝 Примечания:</strong></label>
+                <textarea rows="3" placeholder="Добавьте заметки о пациенте..."></textarea>
+            </div>
+        </div>
+        {{end}}
+    </main>
+</div>
+{{end}}

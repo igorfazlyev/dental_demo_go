@@ -1,0 +1,53 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>🏥 Панель клиники</h2>
+        <nav>
+            <a href="/clinic/dashboard">Dashboard</a>
+            <a href="/clinic/plans" class="active">Входящие планы лечения</a>
+            <a href="/clinic/leads">Лиды (Заявки)</a>
+            <a href="/clinic/analytics">Аналитика и контроль</a>
+            <a href="/clinic/pricelist">Настройки прайс-листа</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>📥 Входящие планы лечения</h1>
+        <h3>Анонимизированные планы от пациентов</h3>
+
+        {{range .IncomingPlans}}
+        <div class="plan-card">
+            <div class="plan-info">
+                <p><strong>ID:</strong> {{.ID}}</p>
+                <p><strong>Дата:</strong> {{.Date}}</p>
+                <p><strong>Возраст:</strong> {{.Age}}</p>
+                <p><strong>Пол:</strong> {{.Gender}}</p>
+            </div>
+            <div class="plan-details">
+                <p><strong>План лечения:</strong></p>
+                <p><em>{{.Procedures}}</em></p>
+            </div>
+            <div class="plan-actions">
+                {{if eq .Status "new"}}
+                <form action="/clinic/plans" method="POST">
+                    <input type="hidden" name="plan_id" value="{{.ID}}">
+                    <input type="hidden" name="action" value="calculate">
+                    <button type="submit" class="btn btn-primary">🧮 Рассчитать предложение</button>
+                </form>
+                {{else if eq .Status "calculated"}}
+                <p class="success">Расчет выполнен! Стоимость: 175k ₽</p>
+                <form action="/clinic/plans" method="POST">
+                    <input type="hidden" name="plan_id" value="{{.ID}}">
+                    <input type="hidden" name="action" value="send">
+                    <button type="submit" class="btn btn-primary">📤 Отправить предложение</button>
+                </form>
+                {{else}}
+                <p class="success">✅ Предложение отправлено</p>
+                {{end}}
+            </div>
+        </div>
+        {{end}}
+    </main>
+</div>
+{{end}}

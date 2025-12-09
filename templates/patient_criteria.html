@@ -1,0 +1,73 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>👤 Личный кабинет пациента</h2>
+        <nav>
+            <a href="/patient/scans">Мои снимки</a>
+            <a href="/patient/plan">План лечения</a>
+            <a href="/patient/criteria" class="active">Настройка критериев</a>
+            <a href="/patient/offers">Предложения клиник</a>
+            <a href="/patient/consultations">Мои консультации</a>
+            <a href="/patient/reviews">Отзывы и жалобы</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>⚙️ Настройка критериев поиска клиники</h1>
+
+        <form class="criteria-form">
+            <div class="form-grid">
+                <div>
+                    <label>📍 Город</label>
+                    <select>
+                        <option>Москва</option>
+                        <option>Санкт-Петербург</option>
+                        <option>Казань</option>
+                        <option>Екатеринбург</option>
+                    </select>
+
+                    <label>🏘️ Район</label>
+                    <select>
+                        <option>Центральный</option>
+                        <option>Северный</option>
+                        <option>Южный</option>
+                        <option>Восточный</option>
+                        <option>Западный</option>
+                    </select>
+
+                    <label>💰 Ценовой сегмент</label>
+                    <select>
+                        <option>Эконом</option>
+                        <option>Средний</option>
+                        <option>Бизнес</option>
+                        <option>Премиум</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>📅 Желаемая дата начала лечения</label>
+                    <input type="date" value="2025-12-16">
+
+                    <label>🔬 Нужные специализации</label>
+                    <select multiple>
+                        <option selected>Имплантология</option>
+                        <option>Ортопедия</option>
+                        <option selected>Терапия</option>
+                        <option>Хирургия</option>
+                    </select>
+
+                    <label>💳 Условия оплаты</label>
+                    <select multiple>
+                        <option selected>Наличие рассрочки</option>
+                        <option>Скидки</option>
+                        <option>Работа со страховыми</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large">💾 Сохранить критерии</button>
+        </form>
+    </main>
+</div>
+{{end}}

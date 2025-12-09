@@ -1,0 +1,48 @@
+
+dental-ai-platform/
+│
+├── 📄 main.go                          # Backend сервер (800+ строк)
+├── 📄 go.mod                           # Go модуль
+├── 📄 Dockerfile                       # Docker конфигурация
+├── 📄 .gitignore                       # Git ignore правила
+│
+├── 📁 templates/                       # HTML шаблоны (14 файлов)
+│   ├── login.html                      # Страница входа
+│   │
+│   ├── patient_scans.html              # 👤 Пациент: снимки
+│   ├── patient_plan.html               # 👤 Пациент: план лечения
+│   ├── patient_criteria.html           # 👤 Пациент: критерии
+│   ├── patient_offers.html             # 👤 Пациент: предложения
+│   ├── patient_consultations.html      # 👤 Пациент: консультации
+│   ├── patient_reviews.html            # 👤 Пациент: отзывы
+│   │
+│   ├── clinic_dashboard.html           # 🏥 Клиника: dashboard
+│   ├── clinic_plans.html               # 🏥 Клиника: планы
+│   ├── clinic_leads.html               # 🏥 Клиника: лиды
+│   ├── clinic_analytics.html           # 🏥 Клиника: аналитика
+│   ├── clinic_pricelist.html           # 🏥 Клиника: прайс-лист
+│   │
+│   ├── government_dashboard.html       # 🏛️ Государство: панель
+│   └── government_analytics.html       # 🏛️ Государство: аналитика
+│
+├── 📁 static/                          # Статические файлы
+│   └── 📁 css/
+│       └── style.css                   # Стили (600+ строк)
+│
+└── 📁 docs/                            # Документация
+    ├── README_GO.md                    # Полная документация
+    ├── QUICKSTART_GO.txt               # Быстрый старт
+    ├── SUMMARY_GO.txt                  # Этот файл
+    └── FILE_STRUCTURE.txt              # Структура проекта
+
+═══════════════════════════════════════════════════════════════════════════
+
+Всего файлов: 25
+  • Go код: 1 файл (~800 строк)
+  • HTML: 14 файлов
+  • CSS: 1 файл (~600 строк)
+  • Конфиг: 4 файла
+  • Документация: 5 файлов
+
+Общий размер: ~150KB (исходники)
+Binary размер: ~15MB (скомпилированный)

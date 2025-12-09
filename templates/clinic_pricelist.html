@@ -1,0 +1,79 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>🏥 Панель клиники</h2>
+        <nav>
+            <a href="/clinic/dashboard">Dashboard</a>
+            <a href="/clinic/plans">Входящие планы лечения</a>
+            <a href="/clinic/leads">Лиды (Заявки)</a>
+            <a href="/clinic/analytics">Аналитика и контроль</a>
+            <a href="/clinic/pricelist" class="active">Настройки прайс-листа</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>💰 Настройки прайс-листа</h1>
+        <h3>Прайс-лист для автоматического расчета</h3>
+
+        <button class="btn btn-primary">📤 Загрузить прайс-лист</button>
+
+        <table class="pricelist-table">
+            <thead>
+                <tr>
+                    <th>Услуга</th>
+                    <th>Цена (₽)</th>
+                    <th>Гарантия (лет)</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Имплант (Nobel)</td>
+                    <td><input type="number" value="95000"></td>
+                    <td><input type="number" value="5"></td>
+                    <td><button class="btn btn-small">✏️</button></td>
+                </tr>
+                <tr>
+                    <td>Имплант (Osstem)</td>
+                    <td><input type="number" value="75000"></td>
+                    <td><input type="number" value="3"></td>
+                    <td><button class="btn btn-small">✏️</button></td>
+                </tr>
+                <tr>
+                    <td>Коронка металлокерамика</td>
+                    <td><input type="number" value="30000"></td>
+                    <td><input type="number" value="2"></td>
+                    <td><button class="btn btn-small">✏️</button></td>
+                </tr>
+                <tr>
+                    <td>Коронка циркониевая</td>
+                    <td><input type="number" value="45000"></td>
+                    <td><input type="number" value="5"></td>
+                    <td><button class="btn btn-small">✏️</button></td>
+                </tr>
+                <tr>
+                    <td>Лечение каналов</td>
+                    <td><input type="number" value="15000"></td>
+                    <td><input type="number" value="1"></td>
+                    <td><button class="btn btn-small">✏️</button></td>
+                </tr>
+                <tr>
+                    <td>Пломба светоотверждаемая</td>
+                    <td><input type="number" value="5000"></td>
+                    <td><input type="number" value="1"></td>
+                    <td><button class="btn btn-small">✏️</button></td>
+                </tr>
+                <tr>
+                    <td>Удаление зуба</td>
+                    <td><input type="number" value="3000"></td>
+                    <td><input type="number" value="0"></td>
+                    <td><button class="btn btn-small">✏️</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="btn btn-primary btn-large">💾 Сохранить изменения</button>
+    </main>
+</div>
+{{end}}

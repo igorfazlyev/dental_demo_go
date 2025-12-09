@@ -1,0 +1,51 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>🏥 Панель клиники</h2>
+        <nav>
+            <a href="/clinic/dashboard" class="active">Dashboard</a>
+            <a href="/clinic/plans">Входящие планы лечения</a>
+            <a href="/clinic/leads">Лиды (Заявки)</a>
+            <a href="/clinic/analytics">Аналитика и контроль</a>
+            <a href="/clinic/pricelist">Настройки прайс-листа</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>📊 Панель управления клиники</h1>
+        <h3>Клиника: СтомаПрофи</h3>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h4>Новых планов за неделю</h4>
+                <p class="metric-value">12</p>
+                <p class="metric-change positive">+3</p>
+            </div>
+            <div class="metric-card">
+                <h4>Потенциальная выручка</h4>
+                <p class="metric-value">2.1 млн ₽</p>
+                <p class="metric-change positive">+15%</p>
+            </div>
+            <div class="metric-card">
+                <h4>Конверсия в записи</h4>
+                <p class="metric-value">42%</p>
+                <p class="metric-change positive">+5%</p>
+            </div>
+            <div class="metric-card">
+                <h4>Средняя стоимость плана</h4>
+                <p class="metric-value">175k ₽</p>
+                <p class="metric-change negative">-2%</p>
+            </div>
+        </div>
+
+        <h3>🎯 Последние активности</h3>
+        <div class="activity-list">
+            <div class="activity-item">✅ Новая заявка от пациента (35 лет, Ж) - имплантация</div>
+            <div class="activity-item">📞 Пациент Иванов И. записан на консультацию</div>
+            <div class="activity-item">💰 Получена оплата от пациента Петровой А. - 85,000 ₽</div>
+            <div class="activity-item">📋 Отправлено предложение по плану #234</div>
+        </div>
+    </main>
+</div>
+{{end}}

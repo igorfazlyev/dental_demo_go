@@ -1,0 +1,66 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>👤 Личный кабинет пациента</h2>
+        <nav>
+            <a href="/patient/scans">Мои снимки</a>
+            <a href="/patient/plan">План лечения</a>
+            <a href="/patient/criteria">Настройка критериев</a>
+            <a href="/patient/offers" class="active">Предложения клиник</a>
+            <a href="/patient/consultations">Мои консультации</a>
+            <a href="/patient/reviews">Отзывы и жалобы</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>🏥 Предложения от клиник</h1>
+        <h3>Получено предложений: {{len .ClinicOffers}}</h3>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Клиника</th>
+                    <th>Рейтинг</th>
+                    <th>Стоимость</th>
+                    <th>Сроки</th>
+                    <th>Рассрочка</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .ClinicOffers}}
+                <tr>
+                    <td><strong>{{.Clinic}}</strong></td>
+                    <td>⭐ {{.Rating}}</td>
+                    <td>{{.Cost}} ₽</td>
+                    <td>{{.Duration}}</td>
+                    <td>{{.Installment}}</td>
+                    <td>
+                        <form action="/patient/offers" method="POST" style="display:inline">
+                            <input type="hidden" name="clinic" value="{{.Clinic}}">
+                            <button type="submit" class="btn btn-small">✅ Выбрать</button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+
+        <h3>Детальная информация</h3>
+        {{range .ClinicOffers}}
+        <div class="offer-card {{if eq $.SelectedClinic .Clinic}}selected{{end}}">
+            <div class="offer-header">
+                <h3>{{.Clinic}}</h3>
+                <p class="cost">{{.Cost}} ₽</p>
+            </div>
+            <p>⭐ Рейтинг: <strong>{{.Rating}}</strong>/5.0</p>
+            <p>🕐 Срок: <strong>{{.Duration}}</strong></p>
+            <p><strong>📋 Детальная калькуляция:</strong><br>{{.Details}}</p>
+            <p><strong>🛡️ Гарантии:</strong> {{.Warranty}}</p>
+            <p><strong>💳 Рассрочка:</strong> {{.Installment}}</p>
+        </div>
+        {{end}}
+    </main>
+</div>
+{{end}}

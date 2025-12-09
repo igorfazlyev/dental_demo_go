@@ -1,0 +1,46 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>👤 Личный кабинет пациента</h2>
+        <nav>
+            <a href="/patient/scans">Мои снимки</a>
+            <a href="/patient/plan">План лечения</a>
+            <a href="/patient/criteria">Настройка критериев</a>
+            <a href="/patient/offers">Предложения клиник</a>
+            <a href="/patient/consultations">Мои консультации</a>
+            <a href="/patient/reviews" class="active">Отзывы и жалобы</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>⭐ Отзывы и жалобы</h1>
+
+        <div class="form-section">
+            <h3>Оставить отзыв о лечении</h3>
+            <form>
+                <input type="text" placeholder="Название клиники" required>
+                <input type="text" placeholder="Имя врача" required>
+                <label>Оценка: <input type="range" min="1" max="5" value="5"></label>
+                <textarea placeholder="Текст отзыва" rows="5"></textarea>
+                <button type="submit" class="btn btn-primary">📤 Отправить отзыв</button>
+            </form>
+        </div>
+
+        <div class="form-section">
+            <h3>Подать жалобу</h3>
+            <form>
+                <input type="text" placeholder="Клиника" required>
+                <select>
+                    <option>Качество услуг</option>
+                    <option>Цены</option>
+                    <option>Отношение персонала</option>
+                    <option>Другое</option>
+                </select>
+                <textarea placeholder="Описание проблемы" rows="5"></textarea>
+                <button type="submit" class="btn btn-primary">📤 Отправить жалобу</button>
+            </form>
+        </div>
+    </main>
+</div>
+{{end}}

@@ -1,0 +1,92 @@
+{{define "content"}}
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>🏥 Панель клиники</h2>
+        <nav>
+            <a href="/clinic/dashboard">Dashboard</a>
+            <a href="/clinic/plans">Входящие планы лечения</a>
+            <a href="/clinic/leads">Лиды (Заявки)</a>
+            <a href="/clinic/analytics" class="active">Аналитика и контроль</a>
+            <a href="/clinic/pricelist">Настройки прайс-листа</a>
+        </nav>
+        <a href="/logout" class="btn btn-secondary">🚪 Выход</a>
+    </aside>
+
+    <main class="content">
+        <h1>📊 Аналитика и контроль</h1>
+
+        <div class="analytics-section">
+            <h3>💰 План/Факт по выручке</h3>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Плановая выручка</h4>
+                    <p class="metric-value">3.2 млн ₽</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Фактическая выручка</h4>
+                    <p class="metric-value">2.8 млн ₽</p>
+                </div>
+                <div class="metric-card">
+                    <h4>Выполнение плана</h4>
+                    <p class="metric-value">87.5%</p>
+                    <p class="metric-change negative">-12.5%</p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Месяц</th>
+                        <th>План (млн)</th>
+                        <th>Факт (млн)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Сентябрь</td><td>2.8</td><td>2.9</td></tr>
+                    <tr><td>Октябрь</td><td>3.0</td><td>2.7</td></tr>
+                    <tr><td>Ноябрь</td><td>3.2</td><td>2.8</td></tr>
+                    <tr><td>Декабрь</td><td>3.5</td><td>2.8</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="analytics-section">
+            <h3>✅ Выполнение планов лечения</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Врач</th>
+                        <th>Начато планов</th>
+                        <th>Завершено</th>
+                        <th>Процент</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Иванов А.А.</td><td>15</td><td>12</td><td>80%</td></tr>
+                    <tr><td>Петрова М.С.</td><td>12</td><td>10</td><td>83%</td></tr>
+                    <tr><td>Сидоров П.И.</td><td>18</td><td>14</td><td>78%</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="analytics-section">
+            <h3>❌ Анализ отказов</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Причина</th>
+                        <th>Количество</th>
+                        <th>Процент</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Высокая цена</td><td>8</td><td>47%</td></tr>
+                    <tr><td>Долгие сроки</td><td>3</td><td>18%</td></tr>
+                    <tr><td>Не устроило расположение</td><td>2</td><td>12%</td></tr>
+                    <tr><td>Другое</td><td>4</td><td>23%</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+{{end}}
