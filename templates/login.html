@@ -1,35 +1,98 @@
 {{define "content"}}
-<div class="container">
+<div class="login-page">
     <div class="login-container">
-        <h1 class="main-header"><i class="fas fa-tooth"></i> DentalAI Platform</h1>
-        <p class="subtitle">Система интеллектуального анализа и маркетплейс стоматологических услуг</p>
+        <div class="login-header">
+            <div class="logo-icon">
+                <i class="fas fa-tooth"></i>
+            </div>
+            <h1>DentalAI Platform</h1>
+            <p class="subtitle">Система интеллектуального анализа и маркетплейс стоматологических услуг</p>
+        </div>
 
-        <div class="role-selection">
-            <div class="role-card">
-                <h3><i class="fas fa-user"></i> Пациент</h3>
-                <p>Загрузите снимок, получите план лечения и предложения от клиник</p>
-                <form action="/login" method="POST">
-                    <input type="hidden" name="role" value="patient">
-                    <button type="submit" class="btn btn-primary">Войти как Пациент</button>
-                </form>
+        <form action="/login" method="POST" class="login-form">
+            {{if .LoginError}}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i> {{.LoginError}}
+            </div>
+            {{end}}
+
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Логин</label>
+                <input type="text" 
+                       id="username" 
+                       name="username" 
+                       class="form-input" 
+                       placeholder="Введите логин" 
+                       required 
+                       autofocus>
             </div>
 
-            <div class="role-card">
-                <h3><i class="fas fa-hospital"></i> Клиника</h3>
-                <p>Получайте заявки и управляйте пациентами</p>
-                <form action="/login" method="POST">
-                    <input type="hidden" name="role" value="clinic">
-                    <button type="submit" class="btn btn-primary">Войти как Клиника</button>
-                </form>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Пароль</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       class="form-input" 
+                       placeholder="Введите пароль" 
+                       required>
             </div>
 
-            <div class="role-card">
-                <h3><i class="fas fa-landmark"></i> Гос. орган</h3>
-                <p>Мониторинг отрасли и аналитика</p>
-                <form action="/login" method="POST">
-                    <input type="hidden" name="role" value="government">
-                    <button type="submit" class="btn btn-primary">Войти как Гос. орган</button>
-                </form>
+            <button type="submit" class="btn btn-primary btn-login">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+        </form>
+
+        <div class="demo-credentials">
+            <div class="demo-header">
+                <i class="fas fa-info-circle"></i>
+                <span>Демо-доступы:</span>
+            </div>
+
+            <div class="credentials-grid">
+                <div class="credential-card">
+                    <div class="credential-icon patient-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="credential-content">
+                        <strong>Пациент</strong>
+                        <div class="credential-details">
+                            <span>Логин:</span> <code>patient</code>
+                        </div>
+                        <div class="credential-details">
+                            <span>Пароль:</span> <code>demo123</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credential-card">
+                    <div class="credential-icon clinic-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <div class="credential-content">
+                        <strong>Клиника</strong>
+                        <div class="credential-details">
+                            <span>Логин:</span> <code>clinic</code>
+                        </div>
+                        <div class="credential-details">
+                            <span>Пароль:</span> <code>demo123</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="credential-card">
+                    <div class="credential-icon government-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <div class="credential-content">
+                        <strong>Гос. орган</strong>
+                        <div class="credential-details">
+                            <span>Логин:</span> <code>government</code>
+                        </div>
+                        <div class="credential-details">
+                            <span>Пароль:</span> <code>demo123</code>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

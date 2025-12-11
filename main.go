@@ -14,10 +14,10 @@ import (
 
 // Data structures
 type Scan struct {
-	ID          int       `json:"id"`
-	Date        string    `json:"date"`
-	Status      string    `json:"status"`
-	AIProcessed bool      `json:"ai_processed"`
+	ID          int    `json:"id"`
+	Date        string `json:"date"`
+	Status      string `json:"status"`
+	AIProcessed bool   `json:"ai_processed"`
 }
 
 type Procedure struct {
@@ -62,6 +62,7 @@ type Lead struct {
 type Session struct {
 	UserRole       string
 	LoggedIn       bool
+	LoginError     string
 	SelectedClinic string
 	PatientScans   []Scan
 	TreatmentPlan  TreatmentPlan
@@ -70,17 +71,30 @@ type Session struct {
 	Leads          []Lead
 }
 
+// Demo user credentials
+type User struct {
+	Username string
+	Password string
+	Role     string
+}
+
+var demoUsers = []User{
+	{Username: "patient", Password: "demo123", Role: "patient"},
+	{Username: "clinic", Password: "demo123", Role: "clinic"},
+	{Username: "government", Password: "demo123", Role: "government"},
+}
+
 // Global session storage
 var (
-	sessions  = make(map[string]*Session)
-	mu        sync.RWMutex
+	sessions = make(map[string]*Session)
+	mu       sync.RWMutex
 )
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// Initialize mock data
+// Initialize mock data with realistic 2-3 months of activity
 func initSession() *Session {
 	return &Session{
 		LoggedIn: false,
@@ -198,6 +212,16 @@ func initSession() *Session {
 	}
 }
 
+// Validate user credentials
+func validateCredentials(username, password string) (string, bool) {
+	for _, user := range demoUsers {
+		if user.Username == username && user.Password == password {
+			return user.Role, true
+		}
+	}
+	return "", false
+}
+
 func getSession(r *http.Request) *Session {
 	cookie, err := r.Cookie("session_id")
 	if err != nil {
@@ -236,7 +260,6 @@ func saveSession(w http.ResponseWriter, r *http.Request, sess *Session) {
 
 // Template rendering helper with proper layout support
 func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
-	// Parse the base layout and the specific template
 	t, err := template.ParseFiles("templates/base.html", "templates/"+tmpl)
 	if err != nil {
 		log.Printf("Error parsing templates: %v", err)
@@ -244,7 +267,6 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 		return
 	}
 
-	// Execute the base layout (which will call the "content" template)
 	err = t.ExecuteTemplate(w, "base.html", data)
 	if err != nil {
 		log.Printf("Error executing template %s: %v", tmpl, err)
@@ -257,7 +279,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	sess := getSession(r)
 
 	if !sess.LoggedIn {
-		renderTemplate(w, "login.html", nil)
+		renderTemplate(w, "login.html", sess)
 		return
 	}
 
@@ -269,27 +291,48 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	case "government":
 		http.Redirect(w, r, "/government/dashboard", http.StatusSeeOther)
 	default:
-		renderTemplate(w, "login.html", nil)
+		renderTemplate(w, "login.html", sess)
 	}
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		role := r.FormValue("role")
+		username := r.FormValue("username")
+		password := r.FormValue("password")
+
+		// Validate credentials
+		role, valid := validateCredentials(username, password)
+
+		if valid {
+			sess := getSession(r)
+			sess.LoggedIn = true
+			sess.UserRole = role
+			sess.LoginError = ""
+			saveSession(w, r, sess)
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			return
+		}
+
+		// Invalid credentials - show error
 		sess := getSession(r)
-		sess.LoggedIn = true
-		sess.UserRole = role
+		sess.LoginError = "Неверный логин или пароль"
+		sess.LoggedIn = false
 		saveSession(w, r, sess)
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		renderTemplate(w, "login.html", sess)
 		return
 	}
-	renderTemplate(w, "login.html", nil)
+
+	// GET request - show login form
+	sess := getSession(r)
+	sess.LoginError = ""
+	renderTemplate(w, "login.html", sess)
 }
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	sess := getSession(r)
 	sess.LoggedIn = false
 	sess.UserRole = ""
+	sess.LoginError = ""
 	saveSession(w, r, sess)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
@@ -490,8 +533,14 @@ func main() {
 	fmt.Println("🌐 Server running on http://localhost:8080")
 	fmt.Println("📱 Open your browser and navigate to http://localhost:8080")
 	fmt.Println("")
+	fmt.Println("🔐 Demo Credentials:")
+	fmt.Println("   Patient:    username: patient    | password: demo123")
+	fmt.Println("   Clinic:     username: clinic     | password: demo123")
+	fmt.Println("   Government: username: government | password: demo123")
+	fmt.Println("")
 	fmt.Println("✨ Using layout-based templates with base.html")
 	fmt.Println("🎨 Static files served from static/ directory")
+	fmt.Println("📊 Demo data: 2-3 months of realistic activity")
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
