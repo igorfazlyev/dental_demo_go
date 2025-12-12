@@ -259,7 +259,7 @@ func saveSession(w http.ResponseWriter, r *http.Request, sess *Session) {
 }
 
 // Template rendering helper with proper layout support
-func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
+func renderTemplate(w http.ResponseWriter, tmpl string, data any) {
 	t, err := template.ParseFiles("templates/base.html", "templates/"+tmpl)
 	if err != nil {
 		log.Printf("Error parsing templates: %v", err)
