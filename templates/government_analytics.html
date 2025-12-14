@@ -14,26 +14,26 @@
 
         <div class="filters-section">
             <h3><i class="fas fa-filter"></i> Фильтры</h3>
-            <form class="filters-form">
-                <select>
-                    <option>Все клиники</option>
-                    <option>СтомаПрофи</option>
-                    <option>ЭлитДент</option>
-                    <option>Дентал Плюс</option>
+            <form action="/government/analytics" method="POST" class="filters-form">
+                <select name="clinic">
+                    <option value="Все клиники" {{if eq .AnalyticsFilters.Clinic "Все клиники"}}selected{{end}}>Все клиники</option>
+                    <option value="СтомаПрофи" {{if eq .AnalyticsFilters.Clinic "СтомаПрофи"}}selected{{end}}>СтомаПрофи</option>
+                    <option value="ЭлитДент" {{if eq .AnalyticsFilters.Clinic "ЭлитДент"}}selected{{end}}>ЭлитДент</option>
+                    <option value="Дентал Плюс" {{if eq .AnalyticsFilters.Clinic "Дентал Плюс"}}selected{{end}}>Дентал Плюс</option>
                 </select>
 
-                <select>
-                    <option>Все возрастные группы</option>
-                    <option>18-30</option>
-                    <option>31-45</option>
-                    <option>46-60</option>
-                    <option>60+</option>
+                <select name="age_group">
+                    <option value="Все" {{if eq .AnalyticsFilters.AgeGroup "Все"}}selected{{end}}>Все возрастные группы</option>
+                    <option value="18-30" {{if eq .AnalyticsFilters.AgeGroup "18-30"}}selected{{end}}>18-30</option>
+                    <option value="31-45" {{if eq .AnalyticsFilters.AgeGroup "31-45"}}selected{{end}}>31-45</option>
+                    <option value="46-60" {{if eq .AnalyticsFilters.AgeGroup "46-60"}}selected{{end}}>46-60</option>
+                    <option value="60+" {{if eq .AnalyticsFilters.AgeGroup "60+"}}selected{{end}}>60+</option>
                 </select>
 
-                <select>
-                    <option>Все</option>
-                    <option>Мужской</option>
-                    <option>Женский</option>
+                <select name="gender">
+                    <option value="Все" {{if eq .AnalyticsFilters.Gender "Все"}}selected{{end}}>Все</option>
+                    <option value="Мужской" {{if eq .AnalyticsFilters.Gender "Мужской"}}selected{{end}}>Мужской</option>
+                    <option value="Женский" {{if eq .AnalyticsFilters.Gender "Женский"}}selected{{end}}>Женский</option>
                 </select>
 
                 <button type="submit" class="btn btn-primary">Применить фильтры</button>
@@ -41,19 +41,19 @@
         </div>
 
         <div class="analytics-detail">
-            <h3><i class="fas fa-hospital"></i> Детальная информация: СтомаПрофи</h3>
+            <h3><i class="fas fa-hospital"></i> Детальная информация: {{.AnalyticsData.Clinic}}</h3>
             <div class="metrics-grid">
                 <div class="metric-card">
                     <h4>Планов обработано</h4>
-                    <p class="metric-value">89</p>
+                    <p class="metric-value">{{.AnalyticsData.PlansProcessed}}</p>
                 </div>
                 <div class="metric-card">
                     <h4>Средний чек</h4>
-                    <p class="metric-value">175.000 ₽</p>
+                    <p class="metric-value">{{.AnalyticsData.AverageCheck}} ₽</p>
                 </div>
                 <div class="metric-card">
                     <h4>Конверсия</h4>
-                    <p class="metric-value">38%</p>
+                    <p class="metric-value">{{.AnalyticsData.ConversionRate}}%</p>
                 </div>
             </div>
 
@@ -63,11 +63,13 @@
                     <tr><th>Месяц</th><th>Выручка (млн)</th><th>Пациенты</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>Август</td><td>22.5</td><td>285</td></tr>
-                    <tr><td>Сентябрь</td><td>24.1</td><td>298</td></tr>
-                    <tr><td>Октябрь</td><td>23.8</td><td>287</td></tr>
-                    <tr><td>Ноябрь</td><td>26.2</td><td>315</td></tr>
-                    <tr><td>Декабрь</td><td>28.5</td><td>342</td></tr>
+                    {{range .AnalyticsData.MonthlyData}}
+                    <tr>
+                        <td>{{.Month}}</td>
+                        <td>{{printf "%.2f" .Revenue}}</td>
+                        <td>{{.Patients}}</td>
+                    </tr>
+                    {{end}}
                 </tbody>
             </table>
         </div>
@@ -79,11 +81,13 @@
                     <tr><th>Заболевание</th><th>Случаев</th><th>Средний возраст</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>Кариес</td><td>523</td><td>34</td></tr>
-                    <tr><td>Пульпит</td><td>224</td><td>38</td></tr>
-                    <tr><td>Пародонтит</td><td>187</td><td>45</td></tr>
-                    <tr><td>Периодонтит</td><td>98</td><td>42</td></tr>
-                    <tr><td>Гингивит</td><td>156</td><td>29</td></tr>
+                    {{range .DiseaseStats}}
+                    <tr>
+                        <td>{{.Disease}}</td>
+                        <td>{{.Cases}}</td>
+                        <td>{{.AverageAge}}</td>
+                    </tr>
+                    {{end}}
                 </tbody>
             </table>
         </div>
