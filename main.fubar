@@ -57,7 +57,7 @@ type Lead struct {
 	Plan   string `json:"plan"`
 	Cost   int    `json:"cost"`
 	Status string `json:"status"`
-	Notes  string `json:"notes"` // ADD THIS LINE
+	Notes  string `json:"notes"`
 }
 
 type PriceItem struct {
@@ -65,18 +65,6 @@ type PriceItem struct {
 	Price    int    `json:"price"`
 	Warranty int    `json:"warranty"`
 }
-
-// type Session struct {
-// 	UserRole       string
-// 	LoggedIn       bool
-// 	LoginError     string
-// 	SelectedClinic string
-// 	PatientScans   []Scan
-// 	TreatmentPlan  TreatmentPlan
-// 	ClinicOffers   []ClinicOffer
-// 	IncomingPlans  []IncomingPlan
-// 	Leads          []Lead
-// }
 
 type Session struct {
 	UserRole       string
@@ -115,12 +103,22 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-// Initialize mock data with realistic 2-3 months of activity
+// Custom file server with no-cache headers for development
+func noCacheFileServer(fs http.FileSystem) http.Handler {
+	fileServer := http.FileServer(fs)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
+		fileServer.ServeHTTP(w, r)
+	})
+}
+
+// Initialize mock data
 func initSession() *Session {
 	return &Session{
 		LoggedIn: false,
 
-		// Patient: 10 scans over 2.5 months
 		PatientScans: []Scan{
 			{ID: 1, Date: "2025-09-15", Status: "ready", AIProcessed: true},
 			{ID: 2, Date: "2025-09-28", Status: "ready", AIProcessed: true},
@@ -134,7 +132,6 @@ func initSession() *Session {
 			{ID: 10, Date: "2025-12-09", Status: "processing", AIProcessed: false},
 		},
 
-		// Patient: 15 diagnoses and 10 procedures
 		TreatmentPlan: TreatmentPlan{
 			Diagnoses: []string{
 				"Кариес зуба 1.6 (глубокий)",
@@ -167,7 +164,6 @@ func initSession() *Session {
 			},
 		},
 
-		// Patient: 3 clinic offers
 		ClinicOffers: []ClinicOffer{
 			{
 				Clinic:      "СтомаПрофи",
@@ -198,7 +194,6 @@ func initSession() *Session {
 			},
 		},
 
-		// Clinic: 15 incoming plans over 2 months
 		IncomingPlans: []IncomingPlan{
 			{ID: 1, Age: 35, Gender: "Ж", Date: "2025-12-09", Procedures: "Имплант 3.7, Коронка 2.5, Лечение каналов", Status: "new"},
 			{ID: 2, Age: 42, Gender: "М", Date: "2025-12-08", Procedures: "Протезирование верхняя челюсть (6 единиц)", Status: "offer_sent"},
@@ -217,19 +212,19 @@ func initSession() *Session {
 			{ID: 15, Age: 37, Gender: "Ж", Date: "2025-11-15", Procedures: "Лечение пульпита 3шт, пломбирование 2шт", Status: "offer_sent"},
 		},
 
-		// Clinic: 10 leads with Russian names
 		Leads: []Lead{
 			{ID: 1, Name: "Анна Петрова", Phone: "+7 916 555-1234", Plan: "Имплант 3.7, Коронка 2.5", Cost: 165000, Status: "Не обработан", Notes: ""},
-			{ID: 2, Name: "Игорь Смирнов", Phone: "+7 926 555-5678", Plan: "Протезирование верхняя челюсть", Cost: 280000, Status: "Записан на консультацию", Notes: ""},
+			{ID: 2, Name: "Игорь Смирнов", Phone: "+7 926 555-5678", Plan: "Протезирование верхняя челюсть", Cost: 280000, Status: "Записан на консультацию", Notes: "Предпочитает утренние часы"},
 			{ID: 3, Name: "Елена Ковалева", Phone: "+7 905 555-2341", Plan: "Имплант 4.6, 4.7 + костная пластика", Cost: 320000, Status: "Записан на консультацию", Notes: ""},
-			{ID: 4, Name: "Дмитрий Волков", Phone: "+7 903 555-8765", Plan: "Лечение каналов + коронка", Cost: 45000, Status: "Лечение начато", Notes: ""},
+			{ID: 4, Name: "Дмитрий Волков", Phone: "+7 903 555-8765", Plan: "Лечение каналов + коронка", Cost: 45000, Status: "Лечение начато", Notes: "Оплата в 2 этапа"},
 			{ID: 5, Name: "Мария Соколова", Phone: "+7 915 555-4567", Plan: "Виниры 6 единиц", Cost: 180000, Status: "Не обработан", Notes: ""},
-			{ID: 6, Name: "Сергей Морозов", Phone: "+7 925 555-7890", Plan: "Пародонтологическое лечение", Cost: 85000, Status: "Лечение начато", Notes: ""},
+			{ID: 6, Name: "Сергей Морозов", Phone: "+7 925 555-7890", Plan: "Пародонтологическое лечение", Cost: 85000, Status: "Лечение начато", Notes: "Необходима консультация пародонтолога"},
 			{ID: 7, Name: "Ольга Новикова", Phone: "+7 917 555-3456", Plan: "Эстетическая реставрация 4 зуба", Cost: 96000, Status: "Записан на консультацию", Notes: ""},
 			{ID: 8, Name: "Александр Лебедев", Phone: "+7 906 555-6543", Plan: "Имплант + синус-лифтинг", Cost: 195000, Status: "Не обработан", Notes: ""},
-			{ID: 9, Name: "Татьяна Козлова", Phone: "+7 916 555-9876", Plan: "Лечение каналов 2.5, 2.6", Cost: 28000, Status: "Лечение завершено", Notes: ""},
-			{ID: 10, Name: "Владимир Орлов", Phone: "+7 929 555-1111", Plan: "Полное протезирование нижняя челюсть", Cost: 450000, Status: "Отказ", Notes: "Слишком дорого"},
+			{ID: 9, Name: "Татьяна Козлова", Phone: "+7 916 555-9876", Plan: "Лечение каналов 2.5, 2.6", Cost: 28000, Status: "Лечение завершено", Notes: "Лечение завершено успешно"},
+			{ID: 10, Name: "Владимир Орлов", Phone: "+7 929 555-1111", Plan: "Полное протезирование нижняя челюсть", Cost: 450000, Status: "Отказ", Notes: "Высокая стоимость"},
 		},
+
 		PriceList: []PriceItem{
 			{Service: "Имплант (Nobel)", Price: 95000, Warranty: 5},
 			{Service: "Имплант (Osstem)", Price: 75000, Warranty: 3},
@@ -291,8 +286,8 @@ func saveSession(w http.ResponseWriter, r *http.Request, sess *Session) {
 	mu.Unlock()
 }
 
-// Template rendering helper with proper layout support
-func renderTemplate(w http.ResponseWriter, tmpl string, data any) {
+// Template rendering helper
+func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	t, err := template.ParseFiles("templates/base.html", "templates/"+tmpl)
 	if err != nil {
 		log.Printf("Error parsing templates: %v", err)
@@ -333,7 +328,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		password := r.FormValue("password")
 
-		// Validate credentials
 		role, valid := validateCredentials(username, password)
 
 		if valid {
@@ -346,7 +340,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Invalid credentials - show error
 		sess := getSession(r)
 		sess.LoginError = "Неверный логин или пароль"
 		sess.LoggedIn = false
@@ -355,7 +348,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// GET request - show login form
 	sess := getSession(r)
 	sess.LoginError = ""
 	renderTemplate(w, "login.html", sess)
@@ -473,15 +465,6 @@ func clinicPlansHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "clinic_plans.html", sess)
 }
 
-//	func clinicLeadsHandler(w http.ResponseWriter, r *http.Request) {
-//		sess := getSession(r)
-//		if !sess.LoggedIn || sess.UserRole != "clinic" {
-//			http.Redirect(w, r, "/", http.StatusSeeOther)
-//			return
-//		}
-//		renderTemplate(w, "clinic_leads.html", sess)
-//	}
-
 func clinicLeadsHandler(w http.ResponseWriter, r *http.Request) {
 	sess := getSession(r)
 	if !sess.LoggedIn || sess.UserRole != "clinic" {
@@ -489,13 +472,11 @@ func clinicLeadsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Handle POST request to update lead status/notes
 	if r.Method == "POST" {
 		leadID, _ := strconv.Atoi(r.FormValue("lead_id"))
 		newStatus := r.FormValue("status")
 		newNotes := r.FormValue("notes")
 
-		// Find and update the lead
 		for i, lead := range sess.Leads {
 			if lead.ID == leadID {
 				sess.Leads[i].Status = newStatus
@@ -504,15 +485,11 @@ func clinicLeadsHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		// Save the session
 		saveSession(w, r, sess)
-
-		// Redirect back to the page
 		http.Redirect(w, r, "/clinic/leads", http.StatusSeeOther)
 		return
 	}
 
-	// GET request - show the page
 	renderTemplate(w, "clinic_leads.html", sess)
 }
 
@@ -524,15 +501,6 @@ func clinicAnalyticsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	renderTemplate(w, "clinic_analytics.html", sess)
 }
-
-// func clinicPricelistHandler(w http.ResponseWriter, r *http.Request) {
-// 	sess := getSession(r)
-// 	if !sess.LoggedIn || sess.UserRole != "clinic" {
-// 		http.Redirect(w, r, "/", http.StatusSeeOther)
-// 		return
-// 	}
-// 	renderTemplate(w, "clinic_pricelist.html", sess)
-// }
 
 func clinicPricelistHandler(w http.ResponseWriter, r *http.Request) {
 	sess := getSession(r)
@@ -651,8 +619,8 @@ func apiCalculateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// Static files
-	fs := http.FileServer(http.Dir("static"))
+	// Static files with no-cache headers
+	fs := noCacheFileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Routes
@@ -693,9 +661,11 @@ func main() {
 	fmt.Println("   Clinic:     username: clinic     | password: demo123")
 	fmt.Println("   Government: username: government | password: demo123")
 	fmt.Println("")
-	fmt.Println("✨ Using layout-based templates with base.html")
-	fmt.Println("🎨 Static files served from static/ directory")
-	fmt.Println("📊 Demo data: 2-3 months of realistic activity")
+	fmt.Println("✨ Features:")
+	fmt.Println("   • Clinic Leads - Save status and notes")
+	fmt.Println("   • Price List - Add, edit, delete items")
+	fmt.Println("   • No-cache headers for development")
+	fmt.Println("   • Session-based data storage")
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

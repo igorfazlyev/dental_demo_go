@@ -16,30 +16,36 @@
         <h1><i class="fas fa-users"></i> Лиды (Заявки)</h1>
         <h3>Пациенты, принявшие предложение</h3>
 
-        {{range .Leads}}
+        {{range .Leads}}  
         <div class="lead-card">
             <h3><i class="fas fa-user"></i> {{.Name}} - {{.Status}}</h3>
-            <div class="lead-details">
-                <div>
-                    <p><strong><i class="fas fa-phone"></i> Телефон:</strong> {{.Phone}}</p>
-                    <p><strong><i class="fas fa-briefcase"></i> План лечения:</strong> {{.Plan}}</p>
-                    <p><strong><i class="fas fa-dollar-sign"></i> Стоимость:</strong> {{.Cost}} ₽</p>
+            <form action="/clinic/leads" method="POST" class="lead-form">
+                <input type="hidden" name="lead_id" value="{{.ID}}">
+
+                <div class="lead-details">
+                    <div>
+                        <p><strong><i class="fas fa-phone"></i> Телефон:</strong> {{.Phone}}</p>
+                        <p><strong><i class="fas fa-briefcase"></i> План лечения:</strong> {{.Plan}}</p>
+                        <p><strong><i class="fas fa-dollar-sign"></i> Стоимость:</strong> {{.Cost}} ₽</p>
+                    </div>
+                    <div>
+                        <label><strong>Изменить статус:</strong></label>
+                        <select name="status" class="form-select">
+                            <option {{if eq .Status "Не обработан"}}selected{{end}}>Не обработан</option>
+                            <option {{if eq .Status "Записан на консультацию"}}selected{{end}}>Записан на консультацию</option>
+                            <option {{if eq .Status "Лечение начато"}}selected{{end}}>Лечение начато</option>
+                            <option {{if eq .Status "Лечение завершено"}}selected{{end}}>Лечение завершено</option>
+                            <option {{if eq .Status "Отказ"}}selected{{end}}>Отказ</option>
+                        </select>
+                        <button type="submit" class="btn btn-small btn-primary"><i class="fas fa-save"></i> Сохранить</button>
+                    </div>
                 </div>
-                <div>
-                    <label><strong>Изменить статус:</strong></label>
-                    <select>
-                        <option {{if eq .Status "Не обработан"}}selected{{end}}>Не обработан</option>
-                        <option {{if eq .Status "Записан на консультацию"}}selected{{end}}>Записан на консультацию</option>
-                        <option {{if eq .Status "Лечение начато"}}selected{{end}}>Лечение начато</option>
-                        <option {{if eq .Status "Отказ"}}selected{{end}}>Отказ</option>
-                    </select>
-                    <button class="btn btn-small"><i class="fas fa-save"></i> Сохранить</button>
+                <div class="notes-section">
+                    <label><strong><i class="fas fa-sticky-note"></i> Примечания:</strong></label>
+                    <textarea name="notes" rows="3" placeholder="Добавьте заметки о пациенте...">{{.Notes}}</textarea>
+                    <button type="submit" class="btn btn-small btn-secondary"><i class="fas fa-save"></i> Сохранить заметки</button>
                 </div>
-            </div>
-            <div>
-                <label><strong><i class="fas fa-sticky-note"></i> Примечания:</strong></label>
-                <textarea rows="3" placeholder="Добавьте заметки о пациенте..."></textarea>
-            </div>
+            </form>
         </div>
         {{end}}
     </main>

@@ -36,7 +36,7 @@
                     <button type="submit" class="btn btn-primary"><i class="fas fa-calculator"></i> Рассчитать предложение</button>
                 </form>
                 {{else if eq .Status "calculated"}}
-                <p class="success"><i class="fas fa-check-circle"></i> Расчет выполнен! Стоимость: 175k ₽</p>
+                <p class="success"><i class="fas fa-check-circle"></i> Расчет выполнен! Стоимость: 175.000 ₽</p>
                 <form action="/clinic/plans" method="POST">
                     <input type="hidden" name="plan_id" value="{{.ID}}">
                     <input type="hidden" name="action" value="send">

@@ -16,64 +16,65 @@
         <h1><i class="fas fa-file-invoice-dollar"></i> Настройки прайс-листа</h1>
         <h3>Прайс-лист для автоматического расчета</h3>
 
-        <button class="btn btn-primary"><i class="fas fa-upload"></i> Загрузить прайс-лист</button>
+        {{if .SuccessMessage}}
+        <div class="success-message">
+            <i class="fas fa-check-circle"></i> {{.SuccessMessage}}
+        </div>
+        {{end}}
 
-        <table class="pricelist-table">
-            <thead>
-                <tr>
-                    <th>Услуга</th>
-                    <th>Цена (₽)</th>
-                    <th>Гарантия (лет)</th>
-                    <th>Действия</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Имплант (Nobel)</td>
-                    <td><input type="number" value="95000"></td>
-                    <td><input type="number" value="5"></td>
-                    <td><button class="btn btn-small"><i class="fas fa-edit"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Имплант (Osstem)</td>
-                    <td><input type="number" value="75000"></td>
-                    <td><input type="number" value="3"></td>
-                    <td><button class="btn btn-small"><i class="fas fa-edit"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Коронка металлокерамика</td>
-                    <td><input type="number" value="30000"></td>
-                    <td><input type="number" value="2"></td>
-                    <td><button class="btn btn-small"><i class="fas fa-edit"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Коронка циркониевая</td>
-                    <td><input type="number" value="45000"></td>
-                    <td><input type="number" value="5"></td>
-                    <td><button class="btn btn-small"><i class="fas fa-edit"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Лечение каналов</td>
-                    <td><input type="number" value="15000"></td>
-                    <td><input type="number" value="1"></td>
-                    <td><button class="btn btn-small"><i class="fas fa-edit"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Пломба светоотверждаемая</td>
-                    <td><input type="number" value="5000"></td>
-                    <td><input type="number" value="1"></td>
-                    <td><button class="btn btn-small"><i class="fas fa-edit"></i></button></td>
-                </tr>
-                <tr>
-                    <td>Удаление зуба</td>
-                    <td><input type="number" value="3000"></td>
-                    <td><input type="number" value="0"></td>
-                    <td><button class="btn btn-small"><i class="fas fa-edit"></i></button></td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Add New Item Form -->
+        <div class="add-item-section">
+            <h3><i class="fas fa-plus-circle"></i> Добавить услугу</h3>
+            <form action="/clinic/pricelist/add" method="POST" class="add-item-form">
+                <div class="form-row">
+                    <input type="text" name="service" placeholder="Название услуги" required>
+                    <input type="number" name="price" placeholder="Цена (₽)" required>
+                    <input type="number" name="warranty" placeholder="Гарантия (лет)" required>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Добавить</button>
+                </div>
+            </form>
+        </div>
 
-        <button class="btn btn-primary btn-large"><i class="fas fa-save"></i> Сохранить изменения</button>
+        <!-- Price List Table Form -->
+        <form action="/clinic/pricelist" method="POST">
+            <table class="pricelist-table">
+                <thead>
+                    <tr>
+                        <th>Услуга</th>
+                        <th>Цена (₽)</th>
+                        <th>Гарантия (лет)</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range $index, $item := .PriceList}}
+                    <tr>
+                        <td>
+                            <input type="text" name="service_{{$index}}" value="{{$item.Service}}" class="table-input">
+                        </td>
+                        <td>
+                            <input type="number" name="price_{{$index}}" value="{{$item.Price}}" class="table-input">
+                        </td>
+                        <td>
+                            <input type="number" name="warranty_{{$index}}" value="{{$item.Warranty}}" class="table-input">
+                        </td>
+                        <td>
+                            <a href="/clinic/pricelist/delete?id={{$index}}" 
+                               class="btn btn-small btn-danger"
+                               onclick="return confirm('Удалить эту услугу?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+            <input type="hidden" name="count" value="{{len .PriceList}}">
+            <button type="submit" class="btn btn-primary btn-large">
+                <i class="fas fa-save"></i> Сохранить изменения
+            </button>
+        </form>
     </main>
 </div>
 {{end}}
