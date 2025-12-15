@@ -1697,3 +1697,90 @@ textarea {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== CT SCAN PLACEHOLDER ===== */
+.ct-scan-placeholder {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ct-scan-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.placeholder-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #1976d2;
+    pointer-events: none;
+}
+
+.placeholder-overlay i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    opacity: 0.3;
+}
+
+.placeholder-overlay p {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    .ct-scan-placeholder {
+        max-width: 100%;
+    }
+}
+
+/* ===== CT SCAN PLACEHOLDER ===== */
+.ct-scan-placeholder {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border: 2px solid #1976d2;
+    border-radius: 12px;
+    padding: 80px 40px;
+    text-align: center;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ct-scan-placeholder i {
+    font-size: 64px;
+    color: #1976d2;
+    opacity: 0.4;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.ct-scan-placeholder p {
+    font-size: 18px;
+    color: #546e7a;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .ct-scan-placeholder {
+        padding: 60px 20px;
+    }
+    
+    .ct-scan-placeholder i {
+        font-size: 48px;
+    }
+    
+    .ct-scan-placeholder p {
+        font-size: 16px;
+    }
+}

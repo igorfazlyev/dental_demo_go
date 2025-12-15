@@ -20,9 +20,22 @@
         <div class="plan-container">
             <div class="visualization-section">
                 <h3><i class="fas fa-search"></i> Визуализация снимка</h3>
-                <div class="info-box">
-                    <i class="fas fa-image"></i> Здесь отображается 3D-визуализация КТ-снимка с маркерами проблемных зон
+                
+                <div class="visualization-section">
+                    <h3><i class="fas fa-search"></i> Визуализация снимка</h3>
+                    <div class="ct-scan-placeholder">
+                        <i class="fas fa-cube"></i>
+                        <p>Здесь отображается 3D-визуализация КТ-снимка с маркерами проблемных зон</p>
+                    </div>
+                    <h4>Обнаруженные патологии:</h4>
+                    <ul>
+                        {{range .TreatmentPlan.Diagnoses}}
+                        <li class="warning"><i class="fas fa-exclamation-circle"></i> {{.}}</li>
+                        {{end}}
+                    </ul>
                 </div>
+
+
                 <h4>Обнаруженные патологии:</h4>
                 <ul>
                     {{range .TreatmentPlan.Diagnoses}}
