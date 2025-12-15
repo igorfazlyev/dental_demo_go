@@ -93,6 +93,7 @@ type Session struct {
 	AnalyticsFilters AnalyticsFilters // ADD THIS
 	AnalyticsData    AnalyticsData    // ADD THIS
 	DiseaseStats     []DiseaseStats   // ADD THIS
+	PatientCriteria  PatientCriteria  // ADD THIS LINE
 }
 
 type AnalyticsData struct {
@@ -126,6 +127,20 @@ type User struct {
 	Username string
 	Password string
 	Role     string
+}
+
+type PatientCriteria struct {
+	City         string
+	District     string
+	PriceSegment string
+	StartDate    string
+	Implantology bool
+	Orthopedics  bool
+	Therapy      bool
+	Surgery      bool
+	Installment  bool
+	Discounts    bool
+	Insurance    bool
 }
 
 var demoUsers = []User{
@@ -266,6 +281,14 @@ func initSession() *Session {
 			{Service: "Профессиональная чистка", Price: 4000, Warranty: 0},
 			{Service: "Отбеливание", Price: 15000, Warranty: 0},
 		},
+		PatientCriteria: PatientCriteria{
+			City:         "Москва",
+			District:     "Центральный",
+			PriceSegment: "Средний",
+			StartDate:    "2025-12-16",
+			Implantology: true,
+			Installment:  true,
+		},
 	}
 }
 
@@ -330,171 +353,173 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data any) {
 		http.Error(w, "Template execution error: "+err.Error(), http.StatusInternalServerError)
 	}
 }
+
 //
 
 // REPLACE your getAnalyticsData() function with this enhanced version
 
 func getAnalyticsData(clinic, ageGroup, gender string) (AnalyticsData, []DiseaseStats) {
-    data := AnalyticsData{
-        Clinic: clinic,
-    }
+	data := AnalyticsData{
+		Clinic: clinic,
+	}
 
-    // ===== BASE VALUES =====
-    basePlans := 89
-    baseCheck := 175000
-    baseConversion := 38
-    baseRevenue := 22.5
-    basePatients := 285
+	// ===== BASE VALUES =====
+	basePlans := 89
+	baseCheck := 175000
+	baseConversion := 38
+	baseRevenue := 22.5
+	basePatients := 285
 
-    // ===== CLINIC ADJUSTMENTS =====
-    clinicMultiplier := 1.0
-    if clinic == "ЭлитДент" {
-        basePlans = 124
-        baseCheck = 225000
-        baseConversion = 45
-        clinicMultiplier = 1.35
-    } else if clinic == "Дентал Плюс" {
-        basePlans = 156
-        baseCheck = 165000
-        baseConversion = 42
-        clinicMultiplier = 1.15
-    } else if clinic == "Все клиники" {
-        basePlans = 369
-        baseCheck = 188000
-        baseConversion = 41
-        clinicMultiplier = 3.2
-    }
+	// ===== CLINIC ADJUSTMENTS =====
+	clinicMultiplier := 1.0
+	if clinic == "ЭлитДент" {
+		basePlans = 124
+		baseCheck = 225000
+		baseConversion = 45
+		clinicMultiplier = 1.35
+	} else if clinic == "Дентал Плюс" {
+		basePlans = 156
+		baseCheck = 165000
+		baseConversion = 42
+		clinicMultiplier = 1.15
+	} else if clinic == "Все клиники" {
+		basePlans = 369
+		baseCheck = 188000
+		baseConversion = 41
+		clinicMultiplier = 3.2
+	}
 
-    // ===== AGE GROUP ADJUSTMENTS =====
-    ageMultiplier := 1.0
-    if ageGroup == "46-60" {
-        baseCheck = int(float64(baseCheck) * 1.3)
-        ageMultiplier = 1.25
-    } else if ageGroup == "18-30" {
-        baseCheck = int(float64(baseCheck) * 0.8)
-        ageMultiplier = 0.85
-    } else if ageGroup == "31-45" {
-        baseCheck = int(float64(baseCheck) * 1.1)
-        ageMultiplier = 1.1
-    } else if ageGroup == "60+" {
-        baseCheck = int(float64(baseCheck) * 1.4)
-        ageMultiplier = 1.15
-    }
+	// ===== AGE GROUP ADJUSTMENTS =====
+	ageMultiplier := 1.0
+	if ageGroup == "46-60" {
+		baseCheck = int(float64(baseCheck) * 1.3)
+		ageMultiplier = 1.25
+	} else if ageGroup == "18-30" {
+		baseCheck = int(float64(baseCheck) * 0.8)
+		ageMultiplier = 0.85
+	} else if ageGroup == "31-45" {
+		baseCheck = int(float64(baseCheck) * 1.1)
+		ageMultiplier = 1.1
+	} else if ageGroup == "60+" {
+		baseCheck = int(float64(baseCheck) * 1.4)
+		ageMultiplier = 1.15
+	}
 
-    // ===== GENDER ADJUSTMENTS =====
-    genderMultiplier := 1.0
-    if gender == "Женский" {
-        basePlans = int(float64(basePlans) * 1.2)
-        genderMultiplier = 1.2
-    } else if gender == "Мужской" {
-        basePlans = int(float64(basePlans) * 0.9)
-        genderMultiplier = 0.9
-    }
+	// ===== GENDER ADJUSTMENTS =====
+	genderMultiplier := 1.0
+	if gender == "Женский" {
+		basePlans = int(float64(basePlans) * 1.2)
+		genderMultiplier = 1.2
+	} else if gender == "Мужской" {
+		basePlans = int(float64(basePlans) * 0.9)
+		genderMultiplier = 0.9
+	}
 
-    data.PlansProcessed = basePlans
-    data.AverageCheck = baseCheck
-    data.ConversionRate = baseConversion
+	data.PlansProcessed = basePlans
+	data.AverageCheck = baseCheck
+	data.ConversionRate = baseConversion
 
-    // ===== DYNAMIC MONTHLY DATA =====
-    totalMultiplier := clinicMultiplier * ageMultiplier * genderMultiplier
+	// ===== DYNAMIC MONTHLY DATA =====
+	totalMultiplier := clinicMultiplier * ageMultiplier * genderMultiplier
 
-    data.MonthlyData = []MonthData{
-        {
-            Month:    "Август",
-            Revenue:  baseRevenue * totalMultiplier * 0.95,
-            Patients: int(float64(basePatients) * totalMultiplier * 0.92),
-        },
-        {
-            Month:    "Сентябрь",
-            Revenue:  baseRevenue * totalMultiplier * 1.02,
-            Patients: int(float64(basePatients) * totalMultiplier * 0.98),
-        },
-        {
-            Month:    "Октябрь",
-            Revenue:  baseRevenue * totalMultiplier * 1.0,
-            Patients: int(float64(basePatients) * totalMultiplier * 0.95),
-        },
-        {
-            Month:    "Ноябрь",
-            Revenue:  baseRevenue * totalMultiplier * 1.08,
-            Patients: int(float64(basePatients) * totalMultiplier * 1.05),
-        },
-        {
-            Month:    "Декабрь",
-            Revenue:  baseRevenue * totalMultiplier * 1.15,
-            Patients: int(float64(basePatients) * totalMultiplier * 1.12),
-        },
-    }
+	data.MonthlyData = []MonthData{
+		{
+			Month:    "Август",
+			Revenue:  baseRevenue * totalMultiplier * 0.95,
+			Patients: int(float64(basePatients) * totalMultiplier * 0.92),
+		},
+		{
+			Month:    "Сентябрь",
+			Revenue:  baseRevenue * totalMultiplier * 1.02,
+			Patients: int(float64(basePatients) * totalMultiplier * 0.98),
+		},
+		{
+			Month:    "Октябрь",
+			Revenue:  baseRevenue * totalMultiplier * 1.0,
+			Patients: int(float64(basePatients) * totalMultiplier * 0.95),
+		},
+		{
+			Month:    "Ноябрь",
+			Revenue:  baseRevenue * totalMultiplier * 1.08,
+			Patients: int(float64(basePatients) * totalMultiplier * 1.05),
+		},
+		{
+			Month:    "Декабрь",
+			Revenue:  baseRevenue * totalMultiplier * 1.15,
+			Patients: int(float64(basePatients) * totalMultiplier * 1.12),
+		},
+	}
 
-    // ===== DYNAMIC DISEASE STATISTICS =====
-    diseases := []DiseaseStats{
-        {Disease: "Кариес", Cases: 523, AverageAge: 34},
-        {Disease: "Пульпит", Cases: 224, AverageAge: 38},
-        {Disease: "Пародонтит", Cases: 187, AverageAge: 45},
-        {Disease: "Периодонтит", Cases: 98, AverageAge: 42},
-        {Disease: "Гингивит", Cases: 156, AverageAge: 29},
-    }
+	// ===== DYNAMIC DISEASE STATISTICS =====
+	diseases := []DiseaseStats{
+		{Disease: "Кариес", Cases: 523, AverageAge: 34},
+		{Disease: "Пульпит", Cases: 224, AverageAge: 38},
+		{Disease: "Пародонтит", Cases: 187, AverageAge: 45},
+		{Disease: "Периодонтит", Cases: 98, AverageAge: 42},
+		{Disease: "Гингивит", Cases: 156, AverageAge: 29},
+	}
 
-    // Adjust based on clinic size
-    if clinic == "ЭлитДент" {
-        for i := range diseases {
-            diseases[i].Cases = int(float64(diseases[i].Cases) * 1.3)
-        }
-    } else if clinic == "Дентал Плюс" {
-        for i := range diseases {
-            diseases[i].Cases = int(float64(diseases[i].Cases) * 1.5)
-        }
-    } else if clinic == "Все клиники" {
-        for i := range diseases {
-            diseases[i].Cases = int(float64(diseases[i].Cases) * 3.5)
-        }
-    }
+	// Adjust based on clinic size
+	if clinic == "ЭлитДент" {
+		for i := range diseases {
+			diseases[i].Cases = int(float64(diseases[i].Cases) * 1.3)
+		}
+	} else if clinic == "Дентал Плюс" {
+		for i := range diseases {
+			diseases[i].Cases = int(float64(diseases[i].Cases) * 1.5)
+		}
+	} else if clinic == "Все клиники" {
+		for i := range diseases {
+			diseases[i].Cases = int(float64(diseases[i].Cases) * 3.5)
+		}
+	}
 
-    // Adjust based on age group
-    if ageGroup == "46-60" {
-        diseases[2].Cases = int(float64(diseases[2].Cases) * 2.2) // Parodontitis
-        diseases[3].Cases = int(float64(diseases[3].Cases) * 1.8) // Periodontitis
-        diseases[0].Cases = int(float64(diseases[0].Cases) * 0.7) // Less caries
-        diseases[4].Cases = int(float64(diseases[4].Cases) * 0.5) // Less gingivitis
-        for i := range diseases {
-            diseases[i].AverageAge = 52
-        }
-    } else if ageGroup == "18-30" {
-        diseases[0].Cases = int(float64(diseases[0].Cases) * 1.8) // More caries
-        diseases[4].Cases = int(float64(diseases[4].Cases) * 1.6) // More gingivitis
-        diseases[2].Cases = int(float64(diseases[2].Cases) * 0.4) // Less parodontitis
-        diseases[3].Cases = int(float64(diseases[3].Cases) * 0.3) // Less periodontitis
-        for i := range diseases {
-            diseases[i].AverageAge = 25
-        }
-    } else if ageGroup == "31-45" {
-        diseases[0].Cases = int(float64(diseases[0].Cases) * 1.2)
-        diseases[1].Cases = int(float64(diseases[1].Cases) * 1.3)
-        for i := range diseases {
-            diseases[i].AverageAge = 38
-        }
-    } else if ageGroup == "60+" {
-        diseases[2].Cases = int(float64(diseases[2].Cases) * 2.8)
-        diseases[3].Cases = int(float64(diseases[3].Cases) * 2.2)
-        diseases[0].Cases = int(float64(diseases[0].Cases) * 0.5)
-        for i := range diseases {
-            diseases[i].AverageAge = 68
-        }
-    }
+	// Adjust based on age group
+	if ageGroup == "46-60" {
+		diseases[2].Cases = int(float64(diseases[2].Cases) * 2.2) // Parodontitis
+		diseases[3].Cases = int(float64(diseases[3].Cases) * 1.8) // Periodontitis
+		diseases[0].Cases = int(float64(diseases[0].Cases) * 0.7) // Less caries
+		diseases[4].Cases = int(float64(diseases[4].Cases) * 0.5) // Less gingivitis
+		for i := range diseases {
+			diseases[i].AverageAge = 52
+		}
+	} else if ageGroup == "18-30" {
+		diseases[0].Cases = int(float64(diseases[0].Cases) * 1.8) // More caries
+		diseases[4].Cases = int(float64(diseases[4].Cases) * 1.6) // More gingivitis
+		diseases[2].Cases = int(float64(diseases[2].Cases) * 0.4) // Less parodontitis
+		diseases[3].Cases = int(float64(diseases[3].Cases) * 0.3) // Less periodontitis
+		for i := range diseases {
+			diseases[i].AverageAge = 25
+		}
+	} else if ageGroup == "31-45" {
+		diseases[0].Cases = int(float64(diseases[0].Cases) * 1.2)
+		diseases[1].Cases = int(float64(diseases[1].Cases) * 1.3)
+		for i := range diseases {
+			diseases[i].AverageAge = 38
+		}
+	} else if ageGroup == "60+" {
+		diseases[2].Cases = int(float64(diseases[2].Cases) * 2.8)
+		diseases[3].Cases = int(float64(diseases[3].Cases) * 2.2)
+		diseases[0].Cases = int(float64(diseases[0].Cases) * 0.5)
+		for i := range diseases {
+			diseases[i].AverageAge = 68
+		}
+	}
 
-    // Adjust based on gender
-    if gender == "Женский" {
-        for i := range diseases {
-            diseases[i].Cases = int(float64(diseases[i].Cases) * 1.15)
-        }
-    } else if gender == "Мужской" {
-        for i := range diseases {
-            diseases[i].Cases = int(float64(diseases[i].Cases) * 0.85)
-        }
-    }
+	// Adjust based on gender
+	if gender == "Женский" {
+		for i := range diseases {
+			diseases[i].Cases = int(float64(diseases[i].Cases) * 1.15)
+		}
+	} else if gender == "Мужской" {
+		for i := range diseases {
+			diseases[i].Cases = int(float64(diseases[i].Cases) * 0.85)
+		}
+	}
 
-    return data, diseases
+	return data, diseases
 }
+
 // Handlers
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	sess := getSession(r)
@@ -583,6 +608,34 @@ func patientCriteriaHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
+
+	// Clear success message
+	sess.SuccessMessage = ""
+
+	// Handle form submission
+	if r.Method == "POST" {
+		// Get form values
+		sess.PatientCriteria.City = r.FormValue("city")
+		sess.PatientCriteria.District = r.FormValue("district")
+		sess.PatientCriteria.PriceSegment = r.FormValue("price_segment")
+		sess.PatientCriteria.StartDate = r.FormValue("start_date")
+
+		// Get checkboxes (they only appear if checked)
+		sess.PatientCriteria.Implantology = r.FormValue("implantology") == "on"
+		sess.PatientCriteria.Orthopedics = r.FormValue("orthopedics") == "on"
+		sess.PatientCriteria.Therapy = r.FormValue("therapy") == "on"
+		sess.PatientCriteria.Surgery = r.FormValue("surgery") == "on"
+		sess.PatientCriteria.Installment = r.FormValue("installment") == "on"
+		sess.PatientCriteria.Discounts = r.FormValue("discounts") == "on"
+		sess.PatientCriteria.Insurance = r.FormValue("insurance") == "on"
+
+		sess.SuccessMessage = "Критерии поиска успешно сохранены!"
+		saveSession(w, r, sess)
+
+		http.Redirect(w, r, "/patient/criteria", http.StatusSeeOther)
+		return
+	}
+
 	renderTemplate(w, "patient_criteria.html", sess)
 }
 
@@ -819,48 +872,48 @@ func governmentDashboardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func governmentAnalyticsHandler(w http.ResponseWriter, r *http.Request) {
-    sess := getSession(r)
-    if !sess.LoggedIn || sess.UserRole != "government" {
-        http.Redirect(w, r, "/", http.StatusSeeOther)
-        return
-    }
+	sess := getSession(r)
+	if !sess.LoggedIn || sess.UserRole != "government" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 
-    // Handle filter submission
-    if r.Method == "POST" {
-        clinic := r.FormValue("clinic")
-        ageGroup := r.FormValue("age_group")
-        gender := r.FormValue("gender")
+	// Handle filter submission
+	if r.Method == "POST" {
+		clinic := r.FormValue("clinic")
+		ageGroup := r.FormValue("age_group")
+		gender := r.FormValue("gender")
 
-        // Save filters
-        sess.AnalyticsFilters = AnalyticsFilters{
-            Clinic:   clinic,
-            AgeGroup: ageGroup,
-            Gender:   gender,
-        }
+		// Save filters
+		sess.AnalyticsFilters = AnalyticsFilters{
+			Clinic:   clinic,
+			AgeGroup: ageGroup,
+			Gender:   gender,
+		}
 
-        // Generate filtered data
-        data, diseases := getAnalyticsData(clinic, ageGroup, gender)
-        sess.AnalyticsData = data
-        sess.DiseaseStats = diseases
+		// Generate filtered data
+		data, diseases := getAnalyticsData(clinic, ageGroup, gender)
+		sess.AnalyticsData = data
+		sess.DiseaseStats = diseases
 
-        saveSession(w, r, sess)
-        http.Redirect(w, r, "/government/analytics", http.StatusSeeOther)
-        return
-    }
+		saveSession(w, r, sess)
+		http.Redirect(w, r, "/government/analytics", http.StatusSeeOther)
+		return
+	}
 
-    // Initialize default data if not set
-    if sess.AnalyticsData.Clinic == "" {
-        data, diseases := getAnalyticsData("СтомаПрофи", "Все", "Все")
-        sess.AnalyticsData = data
-        sess.DiseaseStats = diseases
-        sess.AnalyticsFilters = AnalyticsFilters{
-            Clinic:   "СтомаПрофи",
-            AgeGroup: "Все",
-            Gender:   "Все",
-        }
-    }
+	// Initialize default data if not set
+	if sess.AnalyticsData.Clinic == "" {
+		data, diseases := getAnalyticsData("СтомаПрофи", "Все", "Все")
+		sess.AnalyticsData = data
+		sess.DiseaseStats = diseases
+		sess.AnalyticsFilters = AnalyticsFilters{
+			Clinic:   "СтомаПрофи",
+			AgeGroup: "Все",
+			Gender:   "Все",
+		}
+	}
 
-    renderTemplate(w, "government_analytics.html", sess)
+	renderTemplate(w, "government_analytics.html", sess)
 }
 
 // API handlers

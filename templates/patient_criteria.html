@@ -16,50 +16,55 @@
     <main class="content">
         <h1><i class="fas fa-sliders-h"></i> Настройка критериев поиска клиники</h1>
 
-        <form class="criteria-form">
+        {{if .SuccessMessage}}
+        <div class="success-message">
+            <i class="fas fa-check-circle"></i> {{.SuccessMessage}}
+        </div>
+        {{end}}
+
+        <form action="/patient/criteria" method="POST" class="criteria-form">
             <div class="form-grid">
                 <div>
                     <label><i class="fas fa-map-marker-alt"></i> Город</label>
-                    <select>
-                        <option>Москва</option>
-                        <option>Санкт-Петербург</option>
-                        <option>Казань</option>
-                        <option>Екатеринбург</option>
+                    <select name="city">
+                        <option {{if eq .PatientCriteria.City "Москва"}}selected{{end}}>Москва</option>
+                        <option {{if eq .PatientCriteria.City "Санкт-Петербург"}}selected{{end}}>Санкт-Петербург</option>
+                        <option {{if eq .PatientCriteria.City "Казань"}}selected{{end}}>Казань</option>
+                        <option {{if eq .PatientCriteria.City "Екатеринбург"}}selected{{end}}>Екатеринбург</option>
                     </select>
 
                     <label><i class="fas fa-map-marked-alt"></i> Район</label>
-                    <select>
-                        <option>Центральный</option>
-                        <option>Северный</option>
-                        <option>Южный</option>
-                        <option>Восточный</option>
-                        <option>Западный</option>
+                    <select name="district">
+                        <option {{if eq .PatientCriteria.District "Центральный"}}selected{{end}}>Центральный</option>
+                        <option {{if eq .PatientCriteria.District "Северный"}}selected{{end}}>Северный</option>
+                        <option {{if eq .PatientCriteria.District "Южный"}}selected{{end}}>Южный</option>
+                        <option {{if eq .PatientCriteria.District "Восточный"}}selected{{end}}>Восточный</option>
+                        <option {{if eq .PatientCriteria.District "Западный"}}selected{{end}}>Западный</option>
                     </select>
 
                     <label><i class="fas fa-dollar-sign"></i> Ценовой сегмент</label>
-                    <select>
-                        <option>Эконом</option>
-                        <option>Средний</option>
-                        <option>Бизнес</option>
-                        <option>Премиум</option>
+                    <select name="price_segment">
+                        <option {{if eq .PatientCriteria.PriceSegment "Эконом"}}selected{{end}}>Эконом</option>
+                        <option {{if eq .PatientCriteria.PriceSegment "Средний"}}selected{{end}}>Средний</option>
+                        <option {{if eq .PatientCriteria.PriceSegment "Бизнес"}}selected{{end}}>Бизнес</option>
+                        <option {{if eq .PatientCriteria.PriceSegment "Премиум"}}selected{{end}}>Премиум</option>
                     </select>
                 </div>
 
                 <div>
                     <label><i class="far fa-calendar-alt"></i> Желаемая дата начала лечения</label>
-                    <input type="date" value="2025-12-16">
+                    <input type="date" name="start_date" value="{{.PatientCriteria.StartDate}}">
 
                     <label><i class="fas fa-microscope"></i> Нужные специализации</label>
-                        <div><input type="checkbox" checked style="margin-right:1rem;">Имплантология</div>
-                        <div><input type="checkbox" style="margin-right:1rem;">Ортопедия</div>
-                        <div><input type="checkbox" style="margin-right:1rem">Терапия</div>
-                        <div><input type="checkbox" style="margin-right:1rem">Хирургия</div>
+                    <div><input type="checkbox" name="implantology" {{if .PatientCriteria.Implantology}}checked{{end}} style="margin-right:1rem;">Имплантология</div>
+                    <div><input type="checkbox" name="orthopedics" {{if .PatientCriteria.Orthopedics}}checked{{end}} style="margin-right:1rem;">Ортопедия</div>
+                    <div><input type="checkbox" name="therapy" {{if .PatientCriteria.Therapy}}checked{{end}} style="margin-right:1rem;">Терапия</div>
+                    <div><input type="checkbox" name="surgery" {{if .PatientCriteria.Surgery}}checked{{end}} style="margin-right:1rem;">Хирургия</div>
+
                     <label><i class="fas fa-credit-card"></i> Условия оплаты</label>
-                    
-                        <div><input type="checkbox" checked style="margin-right:1rem;">Наличие рассрочки</div>
-                        <div><input type="checkbox" style="margin-right:1rem;">Скидки</div>
-                        <div><input type="checkbox" style="margin-right:1rem">Работа со страховыми</div>
-                    
+                    <div><input type="checkbox" name="installment" {{if .PatientCriteria.Installment}}checked{{end}} style="margin-right:1rem;">Наличие рассрочки</div>
+                    <div><input type="checkbox" name="discounts" {{if .PatientCriteria.Discounts}}checked{{end}} style="margin-right:1rem;">Скидки</div>
+                    <div><input type="checkbox" name="insurance" {{if .PatientCriteria.Insurance}}checked{{end}} style="margin-right:1rem;">Работа со страховыми</div>
                 </div>
             </div>
 
